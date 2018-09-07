@@ -1,0 +1,209 @@
+homeassistant:
+  name: Home
+  latitude: !secret latitude_loc_home
+  longitude: !secret longitude_loc_home
+  elevation: 145
+  unit_system: metric
+  time_zone: Europe/Berlin
+  customize: !include customize.yaml
+  packages: !include_dir_named packages
+
+zone:
+  - name: Work
+    latitude: !secret latitude_loc_work
+    longitude: !secret longitude_loc_work
+    radius: 250
+    icon: mdi:briefcase
+    
+  - name: Home
+    latitude: !secret latitude_loc_home
+    longitude: !secret longitude_loc_home
+    radius: 100
+    icon: mdi:home
+        
+  - name: Fitness
+    latitude: !secret latitude_loc_fitness
+    longitude: !secret longitude_loc_fitness
+    radius: 100
+    icon: mdi:dumbbell
+      
+############################################
+##                                        ##
+##               INCLUDES                 ##
+##                                        ##
+############################################
+# Enables the frontend
+frontend:
+  themes: !include themes.yaml
+  extra_html_url:
+    - /local/custom_ui/state-card-floorplan.html
+# FloorPlan Panel
+panel_custom:
+  - name: floorplan
+    sidebar_title: Floorplan
+    sidebar_icon: mdi:home
+    url_path: floorplan
+    config: !include floorplan.yaml
+
+media_player: !include media_players.yaml
+group: !include groups.yaml
+automation: !include_dir_merge_list automations/
+panel_iframe: !include panels.yaml
+
+############################################
+##                                        ##
+##                DEVICES                 ##
+##                                        ##
+############################################
+
+# Netatmo Camera 
+# netatmo:
+  # api_key: !secret netatmo_camera_api
+  # secret_key: !secret netatmo_camera_key
+  # username: !secret netatmo_username
+  # password: !secret netatmo_password
+  
+########## XIAOMI ###########
+vacuum:
+  - platform: xiaomi_miio
+    host: 192.168.0.84
+    token: !secret xiaomi_vacuum_token
+fan:
+  - platform: xiaomi_miio
+    host: 192.168.0.28
+    token: !secret xiaomi_fan_token
+    
+#########  LOGITECH HARMONY #########
+remote:
+  - platform: harmony
+    name: Harmony Hub
+  - platform: harmony
+    name: Living Room
+######### Yeelight addon ##########
+light:
+  - platform: yeelight
+    devices:
+      192.168.0.26:
+        name: Desklamp
+        transition: 1000
+######### HUE ##########
+hue:
+  bridges:
+    - host: 192.168.0.150
+      allow_unreachable: true
+######## XIAOMI GATEWAY #########
+xiaomi_aqara:
+  discovery_retry: 5
+  gateways:
+    - key: !secret xiaomi_aquara_key
+########  DANALOCK  ########
+lock:
+  - platform: mqtt
+    name: Danalock
+    state_topic: "smartthings/Danalock/lock/state"
+    command_topic: "smartthings/Danalock/lock/cmd"
+    qos: 2
+    retain: false
+    #optimistic: true
+    payload_lock: "locked"
+    payload_unlock: "unlocked"
+###### SMARTTHINGS SMH ALARM CONTROL #####
+alarm_control_panel:
+  platform: mqtt
+  state_topic: "smartthings/alarm system status/alarmSystemStatus/state"
+  command_topic: "smartthings/alarm system status/alarmSystemStatus/cmd"
+  name: "SHM"
+  payload_disarm: "off"
+  payload_arm_home: "stay"
+  payload_arm_away: "away"
+####### DYSON ########
+dyson:
+  username: !secret dyson_email
+  password: !secret dyson_password
+  language: DE
+  devices:
+    - device_id: !secret dyson_deviceid1
+      device_ip: 192.168.0.43
+    - device_id: !secret dyson_deviceid2
+      device_ip: 192.168.0.50
+
+############################################
+##                                        ##
+##                SERVICES                ##
+##                                        ##
+############################################
+  
+################  PUSHBULLET  ###############
+notify:
+    platform: pushbullet
+    api_key: !secret pushbullet_api
+config:
+map:
+http:
+  api_password: !secret http_password
+updater:
+discovery:
+history:
+logbook:
+recorder:
+sun:
+######## MQTT ########
+mqtt:
+  broker: localhost
+  discovery: true
+  discovery_prefix: homeassistant
+# #########  EMULATED HUE  #######
+# emulated_hue:
+  # host_ip: 192.168.0.100
+  # expose_by_default: false
+  # entities:
+    # input_boolean.abkuhlen:
+      # name: "Abk\xFChlung"
+      # hidden: false
+    # input_boolean.abkuhlenbr:
+      # name: "Abk\xFChlung 2"
+      # hidden: false
+    # switch.gaming:
+      # name: "Computer"
+      # hidden: false
+    # input_boolean.naturesound:
+      # name: "Naturger\xE4usche"
+      # hidden: false
+###### Device Trackers  ########
+device_tracker:
+  - platform: owntracks_http
+  - platform: google_maps
+    username: !secret google_username
+    password: !secret google_password
+    max_gps_accuracy: 75
+
+######  Where is my car?  #######               
+camera:
+  - name: Parking
+    platform: generic
+    still_image_url: https://maps.googleapis.com/maps/api/staticmap?autoscale=false&size=500x500&maptype=roadmap&format=png&visual_refresh=true&markers=size:tiny%7Ccolor:0x000000%7Clabel:1%7C50.140446,+8.497954&markers=size:mid%7Ccolor:0x00ff00%7Clabel:1%7C{{states.device_tracker.marcus_audi.attributes.latitude}},{{states.device_tracker.marcus_audi.attributes.longitude}}
+#### XIAOMI CAMERAS #####
+  - name: Xiaomi1
+    platform: ffmpeg
+    input: -rtsp_transport tcp -i rtsp://192.168.0.86/unicast
+#    platform: generic
+#    still_image_url: http://192.168.0.86/snapshot.jpg
+  - name: Xiaomi2
+    platform: ffmpeg
+    input: -rtsp_transport tcp -i rtsp://192.168.0.46/unicast
+#######  WEATHER RADAR  #######
+  - name: Weather
+    platform: generic
+    still_image_url: http://www.wettergefahren.de/DWD/wetter/radar/Radarfilm_WEB_DL.gif
+#######  TEXT TO SPEECH ######
+tts:
+  - platform: google
+    language: 'de' 
+    cache: true
+    cache_dir: /tmp/tts
+    time_memory: 600
+######  kWh Costs  ######
+input_text:
+  energycosts:
+    name: € / kWh
+    initial: 2451

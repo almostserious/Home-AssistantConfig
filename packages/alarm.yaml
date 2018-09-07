@@ -1,0 +1,90 @@
+input_datetime:
+  alarmtime:
+    name: Alarm
+    has_date: true
+    has_time: true
+
+sensor:
+  # - platform: mqtt
+    # name: "alarmtime"
+    # state_topic: 'alarm/alarmtime'
+    # retain: true
+    
+  - platform: time_date
+    display_options:
+      - 'date_time'
+    
+  - platform: template
+    sensors:
+      nextalarm:
+        friendly_name: "Next Alarm"
+        entity_id:
+        - sensor.date__time
+        - sensor.alarmtime
+        value_template: >-
+          {% set time = ((as_timestamp(states('input_datetime.alarmtime')) - (as_timestamp(utcnow())))) %}
+          {% set minutes = ((time % 3600) / 60) | int %}
+          {% set hours = ((time % 86400) / 3600) | int %}
+          {% set days = (time / 86400) | int %}
+
+          {%- if time < 60 -%}
+            <1m
+          {%- else -%}
+            {%- if days > 0 -%}
+              {%- if days == 1 -%}
+                1d
+              {%- else -%}
+                {{ days }}d
+              {%- endif -%}
+            {%- endif -%}
+            {%- if hours > 0 -%}
+              {%- if days > 0 -%}
+                {{ ':' }}
+              {%- endif -%}
+              {%- if hours == 1 -%}
+                1h
+              {%- else -%}
+                {{ hours }}h
+              {%- endif -%}
+            {%- endif -%}
+            {%- if minutes > 0 -%}
+              {%- if days > 0 or hours > 0 -%}
+                {{ ':' }}
+              {%- endif -%}
+              {%- if minutes == 1 -%}
+                1m
+              {%- else -%}
+                {{ minutes }}m
+              {%- endif -%}
+            {%- endif -%}
+          {%- endif -%}
+          
+#  - platform: template
+#    sensors:
+#      alarm:
+#        friendly_name: "Alarm Trigger"
+#        value_template: "{{ (as_timestamp(states('sensor.alarmtime')) - 60) == as_timestamp(utcnow())  | round(0) }}"
+        
+        
+#  - platform: template
+#    sensors:
+#      nextalarm:
+#        friendly_name: "Next alarm"
+#        value_template: "{{ as_timestamp(states('sensor.alarmtime')) | timestamp_custom('%H:%M %a') }}"  
+
+
+# script:       
+  # wakeup_volume:
+    # alias: Wake Up Volume +3
+    # sequence:
+      # - service: input_boolean.turn_on
+        # data:
+          # entity_id: input_boolean.gruppe2
+      # - service: input_number.set_value
+        # data_template:
+          # entity_id: input_number.cast_uberall
+          # value: '{{(states.input_number.cast_uberall.state | int + 3) | int }}'
+      # - service: input_boolean.turn_off
+        # data:
+          # entity_id: input_boolean.gruppe2
+          

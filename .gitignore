@@ -1,0 +1,12 @@
+/addons/*
+/backup/*
+/share/*
+/ssl/*
+*
+!*.yaml
+!.gitignore
+secrets.yaml
+known_devices.yaml
+!automations
+!packages
+!panels

@@ -1,0 +1,27 @@
+input_select:
+  musicspotify:
+    name: Spotify
+    options:
+     # - " "   # Should be empty
+      - Starred
+      - Discover Weekly
+      - New Music Friday
+      - Car Playlist
+      - Songs from Spotify Playlist
+      - Naturgeräusche
+    icon: mdi:music-note
+
+input_boolean:
+  spotify:
+    name: Play Music
+    icon: mdi:spotify
+
+script:
+  play_spotify:
+    sequence:      
+      - service: notify.notify
+        data_template:
+          message: 'Spiele {{ states.input_select.musicspotify.state }} auf {{ states.input_select.media_player.state }}'
+          title: 'Command'
+          target: 'device/Samsung SM-T719'    
+

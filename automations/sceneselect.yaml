@@ -1,0 +1,183 @@
+############################################################################################## SELECT NIGHT MODE  ###
+- alias: 'Scene Select Night'
+  hide_entity: True
+  trigger:
+    platform: time
+    minutes: '/15' 
+    seconds: 00
+####################################################  SELECT NIGHT  ###################################################
+  action:
+  - service: input_select.select_option
+    data_template:
+      entity_id: input_select.mode
+      option: Nacht
+####################################################  CONDITIONS  #####################################################
+  condition:
+    condition: and
+    conditions:
+####################################################  Weekday 23:00 to 2:00  ##########################################
+      - condition: state
+        entity_id: remote.living_room
+        state: 'off'
+        for:
+          minutes: 30
+      - condition: state
+        entity_id: remote.harmony_hub
+        state: 'off'
+        for:
+          minutes: 30
+      - condition: state
+        entity_id: switch.gaming
+        state: 'off'
+        for:
+          minutes: 30
+      - condition: state
+        entity_id: group.motion
+        state: 'off'
+        for:
+          minutes: 30
+      - condition: or
+        conditions:
+          - condition: time
+            after: '23:00:00'
+            before: '04:00:00'
+            weekday:
+              - mon
+              - tue
+              - wed
+              - thu
+              - sun
+####################################################  Weekend 00:00 to 4:00  ##########################################
+          - condition: time
+            after: '00:00:00'
+            before: '04:00:00'
+            weekday:
+              - fri
+              - sat
+      - condition: state
+        entity_id: input_select.mode
+        state: Tag
+
+   
+################################################################################################ SECLECT DAY MODE  ###
+- alias: 'Scene Select Day'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: group.motion
+    to: 'on'
+####################################################  SELECT DAY  #####################################################
+  action:
+  - service: input_select.select_option
+    data_template:
+      entity_id: input_select.mode
+      option: Tag
+####################################################  AFTER 6:30h  ####################################################
+  condition:
+    - condition: time
+      after: '06:30:00'
+      before: '13:00:00'
+    - condition: state
+      entity_id: 'group.location'
+      state: 'home'
+
+    
+    ################################################################################################ SECLECT AWAY MODE  ###
+- alias: 'Scene Select AWAY'
+  hide_entity: True
+  trigger:
+    platform: state
+ #   entity_id: device_tracker.marcus_marcus
+    entity_id: device_tracker.google_maps_104134796803476137613
+    from: 'home'
+####################################################  SELECT AWAY  #####################################################
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.tur_kontakt
+        state: 'off'
+      - condition: state
+        entity_id: input_select.mode
+        state: 'Tag'
+  action:
+  # - service: notify.notify
+    # data_template: 
+      # title: Away
+      # message: Marcus is away from home
+  - service: script.turn_on
+    entity_id: script.lock_door     
+###################################################################################################### WELCOME HOME  ###
+- alias: 'Welcome back home'
+  hide_entity: True
+  trigger:
+    platform: state
+#    entity_id: device_tracker.marcus_marcus
+    entity_id: group.location
+#    from: 'not_home'
+    to: 'home'
+####################################################  SELECT Tag #####################################################
+  action:
+  - wait_template: "{{ states.binary_sensor.tur_kontakt.state == 'on' }}"
+    timeout: 00:30:00
+  - service: input_select.select_option
+    data_template:
+      entity_id: input_select.mode
+      option: 'Tag'
+####################################################  CONDITIONS  #####################################################
+  condition:
+    condition: state
+    entity_id: input_select.mode
+    state: 'Away'
+  id: '1112221'
+    
+    # ################################################################################################ SECLECT AWAY MODE  ###
+# - alias: 'Scene Select AWAY'
+  # trigger:
+    # platform: state
+    # entity_id: device_tracker.marcus_marcus
+    # from: 'home'
+# #    to: 'not_home'
+# ####################################################  SELECT AWAY  #####################################################    
+  # action:
+  # - wait_template: "{{ is_state('group.motion', 'off') }}"
+  # - wait_template: "{{(as_timestamp(now()) - as_timestamp(states.group.motion.last_changed)) | int > 120 }}"
+  # - service: input_select.select_option
+    # data_template:
+      # entity_id: input_select.mode
+      # option: Away
+  # - service: alarm_control_panel.alarm_arm_away
+    # data_template:
+      # entity_id: alarm_control_panel.shm
+# #  - service: lock.lock
+# #    data_template:
+# #      entity_id: lock.danalock
+  # - service: notify.notify
+    # data_template: 
+      # title: Locked & Armed
+      # message: Home is locked & armed
+  # - service: light.turn_off
+    # data_template: 
+      # entity_id: light.desklamp
+      # entity_id: light.wohnzimmer
+      # entity_id: light.kuche
+      # entity_id: light.bad
+      # entity_id: light.schlafzimmer
+      # entity_id: light.flur
+# ####################################################  CONDITIONS  #####################################################
+  # condition:
+    # - condition: state
+      # entity_id: binary_sensor.tur_kontakt
+      # state: 'off'
+      
+############### SELECT AWAY ##############
+
+#- alias: 'Scene Select AWAY'
+#  trigger:
+#    platform: state
+#    entity_id: device_tracker.marcus_marcus
+#    from: 'home'
+#  action:
+#  - wait_template: "{{ is_state('group.motion', 'off') }}"
+#  - delay: '00:00:05'
+#  - wait_template: "{{(as_timestamp(now()) - as_timestamp(states.group.motion.last_changed)) | int > 300 }}"

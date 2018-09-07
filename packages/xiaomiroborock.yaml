@@ -1,0 +1,175 @@
+input_boolean:
+####################  XIAOMI VACUUM ROOM CLEANING ###############
+  kitchenvacuum:
+    name: Küche saugen
+    initial: off
+  livingroomvacuum:
+    name: Wohnzimmer saugen
+    initial: off
+  bathvacuum:
+    name: Bad saugen
+    initial: off
+  bedroomvacuum:
+    name: Schlafzimmer saugen
+    initial: off
+  floorvacuum:
+    name: Flur saugen
+    initial: off 
+  allvacuum:
+    name: Wohnung saugen
+    initial: off
+  allnobathvacuum:
+    name: Wohnung ohne Bad saugen
+    initial: off 
+  kitchenmop:
+    name: Küche wischen
+    initial: off     
+
+################  CLEANING AUTOMATION  ####################
+  daily_vacuum_first_run:
+    name: Wohnung gesaugt
+    initial: off
+  disable_daily_vacuum:
+    name: Tägliches saugen deaktivieren
+    initial: on
+  disable_dustbin_notification:
+    name: Staubsauger leeren deaktivieren
+    initial: off    
+    
+#############################################
+#######  DROP DOWN MENU  ####################
+#############################################
+
+input_select:
+  vacuum_room:
+    name: Raumauswahl Staubsauger
+    options:
+      - Raumauswahl
+      - Wohnung ohne Bad
+      - Gesamte Wohnung
+      - Küche
+      - Schlafzimmer
+      - Wohnzimmer
+      - Flur
+      - Bad
+      - Küche wischen
+
+#############################################
+#######  STATUS SENSOR ######################
+#############################################
+sensor:
+  - platform: template
+    sensors:
+      xiaomi_vacuum_cleaner_status:
+        friendly_name: "Staubsauger Status"
+        value_template: "{{ states.vacuum.xiaomi_vacuum_cleaner.attributes.status }}"
+
+#############################################
+#######  CLEANING SCRIPT ####################
+#############################################        
+script:
+  # vacuum_kitchen:
+        # alias: "Küche Saugen"
+        # sequence:
+          # - service: vacuum.send_command
+            # data:
+              # entity_id: vacuum.xiaomi_vacuum_cleaner
+              # command: app_zoned_clean
+              # params: [[28426,21649,31126,25949,1]]
+            
+  # vacuum_bedroom:
+        # alias: "Schlafzimmer Saugen"
+        # sequence:
+          # - service: vacuum.send_command
+            # data:
+              # entity_id: vacuum.xiaomi_vacuum_cleaner
+              # command: app_zoned_clean
+              # params: [[24010,29348,28710,34748,1]]
+            
+  # vacuum_floor:
+        # alias: "Flur Saugen"
+        # sequence:
+          # - service: vacuum.send_command
+            # data:
+              # entity_id: vacuum.xiaomi_vacuum_cleaner
+              # command: app_zoned_clean
+              # params: [[28358,26298,34258,28048,1]]
+            
+  # vacuum_livingroom:
+        # alias: "Wohnzimmer Saugen"
+        # sequence:
+          # - service: vacuum.send_command
+            # data:
+              # entity_id: vacuum.xiaomi_vacuum_cleaner
+              # command: app_zoned_clean
+              # params: [[23980,21614,28430,29464,1]]
+
+  vacuum_all:
+        alias: "Wohnung Saugen"
+        sequence:
+          - service: vacuum.send_command
+            data:
+              entity_id: vacuum.xiaomi_vacuum_cleaner
+              command: app_zoned_clean
+              params: [[16649,23517,29149,33767,1]]
+            
+  # vacuum_all_no_bath:
+        # alias: "Wohnung (ohne Bad) Saugen"
+        # sequence:
+          # - service: vacuum.send_command
+            # data:
+              # entity_id: vacuum.xiaomi_vacuum_cleaner
+              # command: app_zoned_clean
+              # params: [[24016,21826,30916,34726,1],[30328,26299,34178,28849,1]]
+            
+  # vacuum_bath:
+        # alias: "Bad Saugen"
+        # sequence:
+          # - service: vacuum.send_command
+            # data:
+              # entity_id: vacuum.xiaomi_vacuum_cleaner
+              # command: app_zoned_clean
+              # params: [[31692,23202,33892,26602,1]]
+            
+  mop_kitchen:
+        alias: "Küche Wischen"
+        sequence:
+          - service: vacuum.send_command
+            data:
+              entity_id: vacuum.xiaomi_vacuum_cleaner
+              command: app_goto_target
+              params: [25850,27600]
+          - wait_template: "{{ states.vacuum.xiaomi_vacuum_cleaner.attributes.status == 'Idle'}}"
+          - service: vacuum.set_fan_speed
+            data:
+              entity_id: vacuum.xiaomi_vacuum_cleaner
+              fan_speed: '105'
+          - delay: '00:00:05'    
+          - service: vacuum.send_command
+            data:
+              entity_id: vacuum.xiaomi_vacuum_cleaner
+              command: app_zoned_clean
+              params: [[25439,27847,28989,31247,3],[26201,24220,29051,27870,3],[21881,27540,26381,28490,3]]
+          - wait_template: "{{ states.vacuum.xiaomi_vacuum_cleaner.attributes.status == 'Zoned cleaning'}}"
+          - service: vacuum.start_pause
+            data:
+              entity_id: vacuum.xiaomi_vacuum_cleaner
+  #######  ADD TTS TO INSTALL THE MOP ########################
+          # - service: tts.google_say
+            # entity_id: media_player.kuche
+            # data:
+              # message: 'Bitte den Mopp am Staubsauger Roboter anbringen und dann die Power Taste drücken.'                      
+          - wait_template: "{{ states.vacuum.xiaomi_vacuum_cleaner.attributes.status == 'Returning home'}}"
+            timeout: '01:30:00'
+          - service: vacuum.set_fan_speed
+            data:
+              entity_id: vacuum.xiaomi_vacuum_cleaner
+              fan_speed: 'max'
+          # - service: vacuum.stop
+            # data:
+              # entity_id: vacuum.xiaomi_vacuum_cleaner
+  #######  ADD TTS TO GET RID OF MOP #######################     Zoned cleaning  
+          # - service: tts.google_say
+            # entity_id: media_player.kuche
+            # data:
+              # message: 'Bitte den Mopp vom Staubsauger Roboter entfernen, und dann die Laden Taste Drücken.'

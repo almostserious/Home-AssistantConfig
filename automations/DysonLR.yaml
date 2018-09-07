@@ -1,0 +1,156 @@
+#################################Dyson LR Turn On Power if Oscillate is turned on
+- action:
+  - service: fan.turn_on
+    data:
+      entity_id: fan.wohnzimmer
+  alias: OscillatePower LR
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.linvingroomfanoscillate
+    to: 'on'
+##################################Dyson LR Turn Off Oscillate if Power is turned off
+- action:
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.livingroomfanoscillate
+  - service: input_boolean.turn_off
+    data:
+      entity_id:  input_boolean.livingroomfannightmode
+  alias: OscillatePower Off LR
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: fan.wohnzimmer
+    to: 'off'    
+####################################  Dyson LR Turn off after Timer is @Zero ################
+- action:
+  - service: fan.turn_off
+    data:
+      entity_id: fan.wohnzimmer
+  alias: PowerOff TimerSlider LR
+  hide_entity: True
+  trigger:
+    platform: state
+    to: '0'
+    for: 
+      seconds: 10
+    entity_id: sensor.timedyson
+##################################   Dyson BR Turn TimerSlider to 0 if PowerButton is Off  ############
+- action:
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.livingroom_fantime
+      value: '0'
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.abkuhlen
+  alias: PowerOff Time LR
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: fan.wohnzimmer
+    to: 'off'
+################################## TURN ON STOPWATCH IF TIMER IS BIGGER THAN 0 #####################
+- action:
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.stopwatch
+  - delay: '00:00:01'
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.stopwatch
+  - delay: '00:00:01'
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.stopwatch
+  - delay: '00:00:01'
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.stopwatch
+  alias: TurnOnStopwatch
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_number.livingroom_fantime
+  condition:
+    condition: template
+    value_template: '{{ trigger.to_state.state | int > 0 }}'
+################################## TURN OFF STOPWATCH IF POWER IS OFF ################
+- action:
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.stopwatch
+  - delay: '00:00:01'
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.stopwatch
+  - delay: '00:00:01'
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.stopwatch
+  alias: TurnOffStopwatch
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: fan.wohnzimmer
+    to: 'off'
+############### Change Speed #################################
+- alias: ChangeSpeedLivingroomDyson
+  trigger:
+    platform: state
+    entity_id: input_number.livingroom_fanspeed
+  action:
+    service: fan.set_speed
+    data_template:
+      entity_id: fan.wohnzimmer
+      speed: "{{ trigger.to_state.state | int }}"
+  hide_entity: True
+############### TURN ON DYSON Oscillate ################################
+- alias: TurnOnLivingroomDysonOscillate
+  trigger:
+    platform: state
+    to: 'on'
+    entity_id: input_boolean.livingroomfanoscillate
+  action:
+    service: fan.oscillate
+    data:
+      entity_id: fan.wohnzimmer
+      oscillating: 'True'
+  hide_entity: True
+#########################################################################
+- alias: TurnOffLivingroomDysonOscillate
+  trigger:
+    platform: state
+    to: 'off'
+    entity_id: input_boolean.livingroomfanoscillate
+  action:
+    service: fan.oscillate
+    data:
+      entity_id: fan.wohnzimmer
+      oscillating: 'False'
+  hide_entity: True
+############################# NIGHT MODE  ################################
+- alias: TurnONLivingroomDysonNightMode  
+  trigger:
+    platform: state
+    to: 'on'
+    entity_id: input_boolean.livingroomfannightmode
+  action:
+    service: fan.dyson_set_night_mode
+    data:
+      entity_id: fan.wohnzimmer
+      night_mode: 'true'
+  hide_entity: True
+############################ NIGHT MODE OFF ##############################
+- alias: TurnOFFLivingDysonNightMode  
+  trigger:
+    platform: state
+    to: 'off'
+    entity_id: input_boolean.livingroomfannightmode
+  action:
+    service: fan.dyson_set_night_mode
+    data:
+      entity_id: fan.wohnzimmer
+      night_mode: 'false'
+  hide_entity: True

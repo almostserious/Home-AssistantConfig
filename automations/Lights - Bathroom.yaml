@@ -1,0 +1,101 @@
+######################################################################################################## BATHROOM DAY  ###
+- alias: 'Bath Light Day'
+  hide_entity: True
+  trigger:
+    platform: state
+#    entity_id: binary_sensor.bad_motion
+    entity_id: group.bathroommotion
+    to: 'on'
+####################################################  TURN ON GROUP BATHROOM  @ DAY IF MOTION  ###########################
+  action:
+  - service: light.turn_on
+    data:
+      entity_id: light.bathroom_flex
+      brightness_pct: 80
+      kelvin: 2700
+  - service: light.turn_on
+    data:
+      entity_id: light.bathroom_top
+      brightness_pct: 40
+      kelvin: 2700
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.bathroom
+####################################################  CONDITIONS  #######################################################
+  condition:
+    condition: and
+    conditions:
+####################################################  Lights are off  ###################################################
+    - condition: state
+      entity_id: light.bad
+      state: 'off'
+####################################################  ILLUMINANCE IS BELOW XX  ##########################################
+    - condition: numeric_state
+      entity_id: sensor.bad_helligkeit
+      below: '60'
+####################################################  MODE IS DAY  ######################################################     
+    - condition: state
+      entity_id: input_select.mode
+      state: 'Tag'
+
+#####################################################################################################  BATHROOM NIGHT  ###
+
+- alias: 'Bath Light Night'
+  hide_entity: True
+  trigger:
+    platform: state
+#    entity_id: binary_sensor.bad_motion
+    entity_id: group.bathroommotion
+    to: 'on'
+####################################################  TURN ON BATHROOM  TOP @ NIGHT IF MOTION  ############################
+  action:
+  - service: light.turn_on
+    data:
+      entity_id: 'light.bathroom_flex'
+      brightness_pct: 85
+      color_name: 'red'
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.bathroom
+####################################################  CONDITIONS  #######################################################
+  condition:
+    condition: and
+    conditions:
+####################################################  Lights are off  ###################################################
+    - condition: state
+      entity_id: 'light.bad'
+      state: 'off'
+####################################################  ILLUMINANCE IS BELOW XX  ##########################################
+    - condition: numeric_state
+      entity_id: sensor.bad_helligkeit
+      below: '60'
+####################################################  MODE IS NIGHT  ######################################################     
+    - condition: state
+      entity_id: input_select.mode
+      state: 'Nacht'
+
+      
+#############################################################################################  TURN OFF IF NO MOTION  #######
+- alias: 'Bath Light Off'
+  hide_entity: True
+  trigger:
+    platform: state
+#    entity_id: binary_sensor.bad_motion
+    entity_id: group.bathroommotion
+    to: 'off'
+    for:
+      seconds: 60
+####################################################  TURN ON BATHROOM  TOP @ NIGHT IF MOTION  ############################
+  action:
+  - service: light.turn_off
+    data:
+      entity_id: 'light.bad'
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.bathroom
+####################################################  CONDITIONS  #######################################################
+  condition:
+ ################################################  Lights are off  ######################################################
+    condition: state
+    entity_id: 'input_boolean.bathroom'
+    state: 'on'

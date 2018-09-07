@@ -1,0 +1,92 @@
+######################################################################################################## DRESSER DAY  ###
+- alias: 'Dresser Light Day'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: binary_sensor.ankleide_motion
+    to: 'on'
+####################################################  TURN ON GROUP DRESSER  @ DAY IF MOTION  ###########################
+  action:
+  - service: light.turn_on
+    data:
+      entity_id: light.bedroom_dresser
+      brightness_pct: 100
+      kelvin: 2700
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.dresser
+####################################################  CONDITIONS  #######################################################
+  condition:
+    condition: and
+    conditions:
+####################################################  Lights are off  ###################################################
+    - condition: state
+      entity_id: light.bedroom_dresser
+      state: 'off'
+####################################################  ILLUMINANCE IS BELOW XX  ##########################################
+    - condition: numeric_state
+      entity_id: sensor.avgilluminance
+      below: '30'
+####################################################  MODE IS DAY  ######################################################     
+    - condition: state
+      entity_id: input_select.mode
+      state: 'Tag'
+
+#####################################################################################################  DRESSER NIGHT  ###
+
+- alias: 'Dresser Light Night'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: binary_sensor.ankleide_motion
+    to: 'on'
+####################################################  TURN ON DRESSER  TOP @ NIGHT IF MOTION  ############################
+  action:
+  - service: light.turn_on
+    data:
+      entity_id: 'light.bedroom_dresser'
+      brightness_pct: 25
+      color_name: 'red'
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.dresser
+####################################################  CONDITIONS  #######################################################
+  condition:
+    condition: and
+    conditions:
+####################################################  Lights are off  ###################################################
+    - condition: state
+      entity_id: 'light.bedroom_dresser'
+      state: 'off'
+####################################################  ILLUMINANCE IS BELOW XX  ##########################################
+    - condition: numeric_state
+      entity_id: sensor.avgilluminance
+      below: '30'
+####################################################  MODE IS NIGHT  ######################################################     
+    - condition: state
+      entity_id: input_select.mode
+      state: 'Nacht'
+
+      
+#############################################################################################  TURN OFF IF NO MOTION  #######
+- alias: 'Dresser Light Off'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: binary_sensor.ankleide_motion
+    to: 'off'
+    for:
+      seconds: 30
+####################################################  TURN ON DRESSER  TOP @ NIGHT IF MOTION  ############################
+  action:
+  - service: light.turn_off
+    data:
+      entity_id: 'light.bedroom_dresser'
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.dresser
+####################################################  CONDITIONS  ####################################################### ################################################  Lights have been off before  ######################################################
+  condition:
+    condition: state
+    entity_id: input_boolean.dresser
+    state: 'on'

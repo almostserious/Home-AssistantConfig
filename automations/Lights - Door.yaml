@@ -1,0 +1,92 @@
+######################################################################################################## FLOOR DAY  ###
+- alias: 'Floor Light Day'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: binary_sensor.tur_kontakt
+    to: 'on'
+####################################################  TURN ON GROUP FLOOR  @ DAY IF DOOR IS OPEN ###########################
+  action:
+  - service: light.turn_on
+    data:
+      entity_id: light.flur
+      brightness_pct: 80
+      kelvin: 2700
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.floor
+####################################################  CONDITIONS  #######################################################
+  condition:
+    condition: and
+    conditions:
+####################################################  Lights are off  ###################################################
+    - condition: state
+      entity_id: light.flur
+      state: 'off'
+####################################################  ILLUMINANCE IS BELOW XX  ##########################################
+    - condition: numeric_state
+      entity_id: sensor.flur_helligkeit
+      below: '80'
+####################################################  MODE IS DAY  ######################################################     
+    - condition: state
+      entity_id: input_select.mode
+      state: 'Tag'
+
+#####################################################################################################  FLOOR NIGHT  ###
+
+- alias: 'Floor Light Night'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: binary_sensor.tur_kontakt
+    to: 'on'
+####################################################  TURN ON FLOOR  TOP @ NIGHT IF MOTION  ############################
+  action:
+  - service: light.turn_on
+    data:
+      entity_id: 'light.flur'
+      brightness_pct: 40
+      kelvin: 2700
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.floor
+####################################################  CONDITIONS  #######################################################
+  condition:
+    condition: and
+    conditions:
+####################################################  Lights are off  ###################################################
+    - condition: state
+      entity_id: 'light.flur'
+      state: 'off'
+####################################################  ILLUMINANCE IS BELOW XX  ##########################################
+    - condition: numeric_state
+      entity_id: sensor.flur_helligkeit
+      below: '30'
+####################################################  MODE IS NIGHT  ######################################################     
+    - condition: state
+      entity_id: input_select.mode
+      state: 'Nacht'
+
+      
+#############################################################################################  TURN OFF IF NO MOTION  #######
+#- alias: 'Floor Light Off'
+#  trigger:
+#    platform: state
+#    entity_id: binary_sensor.tur_kontakt
+#    to: 'off'
+#    for:
+#      seconds: 20
+####################################################  TURN OFF FLOOR  TOP @ NIGHT IF Door CLOSES ############################
+#  action:
+#  - service: light.turn_off
+#    data:
+#      entity_id: 'light.flur'
+#  - service: input_boolean.turn_off
+#    data:
+#      entity_id: input_boolean.floor
+####################################################  CONDITIONS  #######################################################
+#  condition:
+ ################################################  Lights have been off before  ######################################################
+#    condition: state
+#    entity_id: 'input_boolean.floor'
+#    state: 'on'

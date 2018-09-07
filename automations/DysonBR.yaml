@@ -1,0 +1,175 @@
+#################################Dyson BR Turn On Power if Oscillate is turned on
+- action:
+  - service: fan.turn_on
+    data:
+      entity_id: fan.schlafzimmer
+  alias: OscillatePower BR
+  id: '2330007'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.bedroomfanoscillate
+    to: 'on'
+##################################Dyson BR Turn Off Oscillate if Power is turned off
+- action:
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.bedroomfanoscillate
+  - service: input_boolean.turn_off
+    data:
+      entity_id:  input_boolean.bedroomfannightmode
+  alias: OscillatePower Off BR
+  id: '2330008'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: fan.schlafzimmer
+    to: 'off'
+
+###############################################################  Dyson BR Turn off after Timer is @Zero ####################################
+- action:
+  - service: fan.turn_off
+    data:
+      entity_id: fan.schlafzimmer
+  alias: PowerOff TimerSlider BR
+  id: '2330013'
+  hide_entity: True
+  trigger:
+    platform: state
+    to: '0'
+    for: 
+      seconds: 10
+    entity_id: sensor.timedysonbr
+#######################################################   Dyson BR Turn TimerSlider to 0 if PowerButton is Off  #################################
+- action:
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.bedroom_fantime
+      value: '0'
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.abkuhlenbr
+  alias: PowerOff Time BR
+  id: '2330014'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: fan.schlafzimmer
+    to: 'off'
+################################################### Turn Off Abkühlen if Timer is done #######################
+- action:
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.abkuhlenbr
+  alias: PowerOff Time BR
+  id: '2330014'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.bedroomfanpower
+    to: 'off'
+############################################################### TURN ON STOPWATCH IF TIMER IS BIGGER THAN 0 ############################################
+- action:
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.stopwatchbr
+  - delay: '00:00:01'
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.stopwatchbr
+  - delay: '00:00:01'
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.stopwatchbr
+  - delay: '00:00:01'
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.stopwatchbr
+  alias: TurnOnStopwatchBR
+  id: '2330015'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_number.bedroom_fantime
+  condition:
+    condition: template
+    value_template: '{{ trigger.to_state.state | int > 0 }}'
+################################################################ TURN OFF STOPWATCH IF POWER IS OFF ####################################################
+- action:
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.stopwatchbr
+  - delay: '00:00:01'
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.stopwatchbr
+  - delay: '00:00:01'
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.stopwatchbr
+  alias: TurnOffStopwatchbr
+  id: '2330016'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: fan.schlafzimmer
+    to: 'off'
+############### Change Speed #################################
+- alias: ChangeSpeedBedroomDyson
+  trigger:
+    platform: state
+    entity_id: input_number.bedroom_fanspeed
+  action:
+    service: fan.set_speed
+    data_template:
+      entity_id: fan.schlafzimmer
+      speed: "{{ trigger.to_state.state | int }}"
+  hide_entity: True
+############### TURN ON DYSON Oscillate ################################
+- alias: TurnOnBedroomDysonOscillate
+  trigger:
+    platform: state
+    to: 'on'
+    entity_id: input_boolean.bedroomfanoscillate
+  action:
+    service: fan.oscillate
+    data:
+      entity_id: fan.schlafzimmer
+      oscillating: 'True'
+  hide_entity: True
+#########################################################################
+- alias: TurnOffBedroomDysonOscillate
+  trigger:
+    platform: state
+    to: 'off'
+    entity_id: input_boolean.bedroomfanoscillate
+  action:
+    service: fan.oscillate
+    data:
+      entity_id: fan.schlafzimmer
+      oscillating: 'False'
+  hide_entity: True
+############################# NIGHT MODE  ################################
+- alias: TurnONBedroomDysonNightMode  
+  trigger:
+    platform: state
+    to: 'on'
+    entity_id: input_boolean.bedroomfannightmode
+  action:
+    service: fan.dyson_set_night_mode
+    data:
+      entity_id: fan.schlafzimmer
+      night_mode: 'True'
+  hide_entity: True
+############################ NIGHT MODE OFF ##############################
+- alias: TurnOFFBedroomDysonNightMode  
+  trigger:
+    platform: state
+    to: 'off'
+    entity_id: input_boolean.bedroomfannightmode
+  action:
+    service: fan.dyson_set_night_mode
+    data:
+      entity_id: fan.schlafzimmer
+      night_mode: 'False'
+  hide_entity: True

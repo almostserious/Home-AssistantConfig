@@ -1,0 +1,44 @@
+input_select:
+############## HOUSE MODES ###############
+  mode:
+    name: 'Modus:'
+    options:
+      - Tag
+      - Nacht
+      - Away
+ #   initial: Tag
+    icon: mdi:home-circle
+    
+script:
+  lock_door:        
+    alias: Lock Door & Arm Alarm
+    sequence:
+      - service: input_select.select_option
+        data_template:
+          entity_id: input_select.mode
+          option: Away
+      - service: alarm_control_panel.alarm_arm_away
+        data_template:
+          entity_id: alarm_control_panel.shm
+      - service: notify.notify
+        data_template: 
+          title: Locked & Armed
+          message: Home is locked & armed
+      - service: light.turn_off
+        data_template: 
+          entity_id: light.desklamp
+      - service: light.turn_off
+        data_template: 
+          entity_id: light.wohnzimmer
+      - service: light.turn_off
+        data_template:
+          entity_id: light.kuche
+      - service: light.turn_off
+        data_template: 
+          entity_id: light.bad
+      - service: light.turn_off
+        data_template: 
+          entity_id: light.schlafzimmer
+      - service: light.turn_off
+        data_template: 
+          entity_id: light.flur

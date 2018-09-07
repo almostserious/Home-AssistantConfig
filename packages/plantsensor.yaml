@@ -1,0 +1,48 @@
+sensor:
+  - platform: miflora
+    mac: !secret mac_miflora1
+    name: Areca Palme
+    force_update: false
+    median: 3
+    monitored_conditions:
+      - moisture
+      - light
+      - temperature
+      - conductivity
+      - battery
+
+  - platform: miflora
+    mac: !secret mac_miflora2
+    name: Friedenslilie
+    force_update: false
+    median: 3
+    monitored_conditions:
+      - moisture
+      - light
+      - temperature
+      - conductivity
+      - battery
+
+      
+plant:
+  Areca Palme:
+    sensors:
+      moisture: sensor.areca_palme_moisture
+      battery: sensor.areca_palme_battery
+      temperature: sensor.areca_palme_temperature
+      conductivity: sensor.areca_palme_conductivity
+      brightness: sensor.areca_palme_light_intensity
+    min_moisture: 20
+    min_battery: 20
+    min_conductivity: 500
+    
+  Friedenslilie:
+    sensors:
+      moisture: sensor.friedenslilie_moisture
+      battery: sensor.friedenslilie_battery
+      temperature: sensor.friedenslilie_temperature
+      conductivity: sensor.friedenslilie_conductivity
+      brightness: sensor.friedenslilie_light_intensity
+    min_moisture: 20
+    min_battery: 20
+    min_conductivity: 500

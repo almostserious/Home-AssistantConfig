@@ -1,0 +1,167 @@
+switch.gaming:
+  icon: mdi:desktop-classic
+#  emulated_hue: true
+#  emulated_hue_name: Computer
+sensor.bad_soden_to_schwalbach_nord:
+  friendly_name: S3 Bad Soden
+sensor.arbeit:
+  friendly_name: Verkehr zur Arbeit
+  icon: mdi:car
+sensor.kino:
+  friendly_name: Verkehr zum Kino
+  icon: mdi:car
+sensor.wiesbaden:
+  friendly_name: Verkehr nach Wiesbaden
+  icon: mdi:car
+sensor.home:
+  friendly_name: Verkehr nach Hause
+  icon: mdi:car
+sensor.schwalbach_nord_to_bad_soden:
+  friendly_name: S3 Schwalbach
+input_slider.livingroom_fanspeed:
+  icon: mdi:fan
+#  emulated_hue: true
+#  emulated_hue_name: Dyson
+#input_boolean.livingroomfanpower:
+#  emulated_hue: true
+#  emulated_hue_name: Dyson
+#input_boolean.bedroomfanpower:
+#  emulated_hue: true
+#  emulated_hue_name: Dyson 2
+#input_boolean.abkuhlen:
+#  emulated_hue: true
+# emulated_hue_name: "Abk\xFChlung"
+input_slider.bedroom_fanspeed:
+  icon: mdi:fan
+#  emulated_hue: true
+#  emulated_hue_name: Dyson 2
+#input_slider.bedroom_fantime:
+#  emulated_hue: false
+#  emulated_hue_name: Dyson Timer 2
+#input_slider.livingroom_fantime:
+#  emulated_hue: false
+#  emulated_hue_name: Dyson Timer
+sensor.timedyson:
+  icon: mdi:timelapse
+sensor.timedysonbr:
+  icon: mdi:timelapse
+script.spotify_music:
+  friendly_name: Play
+  icon: mdi:play
+sensor.hassioparkinggmailcom:
+  friendly_name: Parkplatz
+  icon: mdi:map-marker
+sensor.bad_helligkeit:
+  icon: mdi:theme-light-dark
+sensor.flur_helligkeit:
+  friendly_name: Bad2 Helligkeit
+  icon: mdi:theme-light-dark
+sensor.kuche_helligkeit:
+  icon: mdi:theme-light-dark
+input_text.energycosts:
+  friendly_name: cent / kWh
+  icon: mdi:coin
+sensor.bath_energy_h:
+  icon: mdi:coin
+sensor.total_energy_costs:
+  icon: mdi:coin
+sensor.total_energy_h:
+  icon: mdi:coin
+switch.gamingsuspend:
+  hidden: true
+input_boolean.dummybr:
+  hidden: true
+input_boolean.dummy:
+  hidden: true
+device_tracker.marcus_marcus:
+  entity_picture: /local/images/marcus.jpg
+device_tracker.marcus_audi:
+  entity_picture: /local/images/audia4.jpg
+  friendly_name: Parkplatz
+switch.bad_strom:
+  icon: mdi:power-socket-eu
+  assumed_state: false
+switch.media_strom:
+  icon: mdi:power-socket-eu
+  assumed_state: false
+switch.nas_strom:
+  icon: mdi:power-socket-eu
+  assumed_state: false
+switch.tv_strom:
+  icon: mdi:power-socket-eu
+  assumed_state: false
+switch.wiiu_strom:
+  icon: mdi:power-socket-eu
+  assumed_state: false
+input_boolean.dresser:
+  hidden: true
+input_boolean.bathroom:
+  hidden: true
+input_boolean.floor:
+  hidden: true
+input_boolean.kitchen:
+  hidden: true
+group.stopwatch:
+  hidden: true
+group.stopwatchbr:
+  hidden: true
+input_boolean.stopwatch:
+  hidden: true
+input_boolean.stopwatchbr:
+  hidden: true
+input_boolean.gruppe:
+  hidden: true
+input_boolean.gruppe2:
+  hidden: true
+sensor.stopwatch:
+  hidden: true
+sensor.stopwatchbr:
+  hidden: true
+switch.charger_station:
+  icon: mdi:power-socket-eu
+  assumed_state: false
+group.automations:
+  order: 100
+group.devices:
+  order: 99
+binary_sensor.flur_motion:
+  friendly_name: Bad2 Motion
+sensor.avgilluminance:
+  icon: mdi:theme-light-dark
+binary_sensor.floorplan:
+  custom_ui_state_card: state-card-floorplan
+  config: !include floorplan.yaml
+input_boolean.disable_daily_vacuum:
+  icon: mdi:stop-circle-outline
+input_boolean.disable_dustbin_notification:
+  icon: mdi:delete-empty
+binary_sensor.vacuum_room:
+  custom_ui_state_card: state-card-floorplan
+  config: !include floorplan_vacuum.yaml
+plant.areca_palme:
+  friendly_name: Areca Palme (Wohnzimmer)
+  entity_picture: /local/images/areca.jpg
+plant.friedenslilie:
+  friendly_name: Friedenslilie (Schlafzimmer)
+  entity_picture: /local/images/friedenslilie.jpg
+  
+sensor.areca_palme_battery:
+  hidden: true
+sensor.areca_palme_conductivity:
+  hidden: true
+sensor.areca_palme_light_intensity:
+  hidden: true
+sensor.areca_palme_moisture:
+  hidden: true
+sensor.areca_palme_temperature:
+  hidden: true
+sensor.friedenslilie_battery:
+  hidden: true
+sensor.friedenslilie_conductivity:
+  hidden: true
+sensor.friedenslilie_light_intensity:
+  hidden: true
+sensor.friedenslilie_moisture:
+  hidden: true
+sensor.friedenslilie_temperature:
+  hidden: true

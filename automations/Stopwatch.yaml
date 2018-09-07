@@ -1,0 +1,65 @@
+- alias: Stopwatch start
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.stopwatch
+    to: "on"
+  action:
+    - service: input_boolean.toggle
+      entity_id: input_boolean.dummy
+
+- alias: Stopwatch stop
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.stopwatch
+    to: 'off'
+  action:
+    - service: input_boolean.toggle
+      entity_id: input_boolean.dummy
+
+- alias: Stopwatch update
+  hide_entity: True
+  trigger:
+    platform: time
+    seconds: '/30'
+  condition:
+    condition: state
+    entity_id: input_boolean.stopwatch
+    state: 'on'
+  action:
+    service: input_boolean.toggle
+    entity_id: input_boolean.dummy
+
+- alias: Stopwatch start BR
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.stopwatchbr
+    to: "on"
+  action:
+    - service: input_boolean.toggle
+      entity_id: input_boolean.dummybr
+
+- alias: Stopwatch stop BR
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.stopwatchbr
+    to: 'off'
+  action:
+    - service: input_boolean.toggle
+      entity_id: input_boolean.dummybr
+
+- alias: Stopwatch update BR
+  hide_entity: True
+  trigger:
+    platform: time
+    seconds: '/30'
+  condition:
+    condition: state
+    entity_id: input_boolean.stopwatchbr
+    state: 'on'
+  action:
+    service: input_boolean.toggle
+    entity_id: input_boolean.dummybr

@@ -1,0 +1,70 @@
+input_boolean:
+#####################################
+#######  GOOGLE VOLUME CONTROL ######
+##(DO NOT CHANGE INDIVIDUAL SLIDERS## 
+###  IF CONNECTED SLIDER CHANGES ####
+#######    VIA AUTOMATION)  #########
+#####################################
+  gruppe:
+    name: gruppe
+  gruppe2:
+    name: gruppe2
+
+  
+#####################################
+#########  VOLUME CONTROL  ##########
+#####################################   
+input_number:
+  cast_wohnzimmer:
+    name: Wohnzimmer
+    icon: mdi:sofa
+    min: 0
+    max: 65
+    step: 1
+
+  cast_tv:
+    name: TV
+    icon: mdi:sofa
+    min: 0
+    max: 55
+    step: 1
+    
+  cast_schlafzimmer:
+    name: Schlafzimmer
+    icon: mdi:hotel
+#    initial: 15
+    min: 0
+    max: 55
+    step: 1
+    
+  cast_kuche:
+    name: Küche
+    icon: mdi:food-fork-drink
+#    initial: 40
+    min: 0
+    max: 55
+    step: 1
+    
+  cast_bad:
+    name: Bad
+    icon: mdi:human-male-female
+#    initial: 65
+    min: 0
+    max: 45
+    step: 1
+    
+  cast_uberall:
+    name: Überall
+    icon: mdi:home
+#    initial: 20
+    min: 0
+    max: 100
+    step: 1
+
+  cast_bett:
+    name: Bett
+    icon: mdi:hotel
+#    initial: 20
+    min: 0
+    max: 75
+    step: 1

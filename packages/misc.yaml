@@ -1,0 +1,66 @@
+sensor:
+# Fritzbox
+  - platform: fritzbox_netmonitor
+# Weather prediction
+  - platform: yr
+#Bahn Bad Soden - Schwalbach_Nord
+  - platform: deutsche_bahn
+    from: Bad_Soden
+    to: Schwalbach_Nord
+#Bahn Schwalbach Nord - Bad Soden
+  - platform: deutsche_bahn
+    from: Schwalbach_Nord
+    to: Bad_Soden
+
+  - platform: waze_travel_time
+    name: Arbeitsweg
+    origin: !secret address_home
+    destination: !secret address_work
+    region: 'EU'
+  - platform: waze_travel_time
+    name: Heimweg
+    origin: !secret address_work
+    destination:  !secret address_home
+    region: 'EU'
+    
+    #SSL Certificate Expiry
+  - platform: cert_expiry
+    host: !secret host
+
+  - platform: systemmonitor
+    resources:
+      - type: load_1m
+      - type: load_5m
+      - type: load_15m
+      - type: processor_use
+      - type: memory_use_percent
+
+shell_command:
+  suspend: 'curl -k http://192.168.0.89:7760/suspend'
+
+switch:
+  - platform: wake_on_lan
+    mac_address: !secret mac_pc 
+    name: Gaming
+    host: 192.168.0.89
+    turn_off:
+      service: shell_command.suspend
+      
+script:
+  push_parking:
+    alias: Parkplatz
+    sequence:
+    - service: notify.notify
+      data_template: 
+        title: Parkplatz 
+        message: Parkplatz
+        data:
+          url: http://maps.google.com/maps?q={{ states('device_tracker.marcus_audi') }} 
+          
+input_boolean:
+  cameratoogle:
+    name: Überwachung
+ 
+  
+          
+          

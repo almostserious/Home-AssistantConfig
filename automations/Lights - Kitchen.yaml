@@ -1,0 +1,93 @@
+######################################################################################################## KITCHEN DAY  ###
+- alias: 'Kitchen Light Day'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: binary_sensor.kuche_motion
+    to: 'on'
+####################################################  TURN ON GROUP KITCHEN  @ DAY IF MOTION  ###########################
+  action:
+  - service: light.turn_on
+    data:
+      entity_id: light.kuche
+      brightness_pct: 80
+      kelvin: 2700
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.kitchen
+####################################################  CONDITIONS  #######################################################
+  condition:
+    condition: and
+    conditions:
+####################################################  Lights are off  ###################################################
+    - condition: state
+      entity_id: light.kuche
+      state: 'off'
+####################################################  ILLUMINANCE IS BELOW XX  ##########################################
+    - condition: numeric_state
+      entity_id: sensor.kuche_helligkeit
+      below: '60'
+####################################################  MODE IS DAY  ######################################################     
+    - condition: state
+      entity_id: input_select.mode
+      state: 'Tag'
+
+#####################################################################################################  KITCHEN NIGHT  ###
+
+- alias: 'Kitchen Light Night'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: binary_sensor.kuche_motion
+    to: 'on'
+####################################################  TURN ON KITCHEN  TOP @ NIGHT IF MOTION  ############################
+  action:
+  - service: light.turn_on
+    data:
+      entity_id: 'light.kitchen_top'
+      brightness_pct: 25
+      color_name: 'red'
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.kitchen
+####################################################  CONDITIONS  #######################################################
+  condition:
+    condition: and
+    conditions:
+####################################################  Lights are off  ###################################################
+    - condition: state
+      entity_id: 'light.kuche'
+      state: 'off'
+####################################################  ILLUMINANCE IS BELOW XX  ##########################################
+    - condition: numeric_state
+      entity_id: sensor.kuche_helligkeit
+      below: '60'
+####################################################  MODE IS NIGHT  ######################################################     
+    - condition: state
+      entity_id: input_select.mode
+      state: 'Nacht'
+
+      
+#############################################################################################  TURN OFF IF NO MOTION  #######
+- alias: 'Kitchen Light Off'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: binary_sensor.kuche_motion
+    to: 'off'
+    for:
+      seconds: 10
+####################################################  TURN ON KITCHEN  TOP @ NIGHT IF MOTION  ############################
+  action:
+  - service: light.turn_off
+    data:
+      entity_id: 'light.kuche'
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.kitchen
+####################################################  CONDITIONS  #######################################################
+  condition:
+ ################################################  Lights are off  ######################################################
+    condition: state
+    entity_id: 'input_boolean.kitchen'
+    state: 'on'

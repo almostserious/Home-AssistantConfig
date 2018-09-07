@@ -1,0 +1,96 @@
+######################################################################################################## FLOOR DAY  ###
+- alias: 'Floor Light Day2'
+  hide_entity: True
+  trigger:
+    platform: state
+#    entity_id: binary_sensor.flur_motion
+    entity_id: binary_sensor.xiaomi_motion
+    to: 'on'
+####################################################  TURN ON GROUP FLOOR  @ DAY IF MOTION  ###########################
+  action:
+  - service: light.turn_on
+    data:
+      entity_id: light.flur
+      brightness_pct: 80
+      kelvin: 2700
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.floor
+####################################################  CONDITIONS  #######################################################
+  condition:
+    condition: and
+    conditions:
+####################################################  Lights are off  ###################################################
+    - condition: state
+      entity_id: light.flur
+      state: 'off'
+####################################################  ILLUMINANCE IS BELOW XX  ##########################################
+    - condition: numeric_state
+      entity_id: sensor.avgilluminance
+      below: '80'
+####################################################  MODE IS DAY  ######################################################     
+    - condition: state
+      entity_id: input_select.mode
+      state: 'Tag'
+
+#####################################################################################################  FLOOR NIGHT  ###
+
+- alias: 'Floor Light Night2'
+  hide_entity: True
+  trigger:
+    platform: state
+#    entity_id: binary_sensor.flur_motion
+    entity_id: binary_sensor.xiaomi_motion
+    to: 'on'
+####################################################  TURN ON FLOOR  TOP @ NIGHT IF MOTION  ############################
+  action:
+  - service: light.turn_on
+    data:
+      entity_id: 'light.flur'
+      brightness_pct: 25
+      color_name: 'red'
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.floor
+####################################################  CONDITIONS  #######################################################
+  condition:
+    condition: and
+    conditions:
+####################################################  Lights are off  ###################################################
+    - condition: state
+      entity_id: 'light.flur'
+      state: 'off'
+####################################################  ILLUMINANCE IS BELOW XX  ##########################################
+    - condition: numeric_state
+      entity_id: sensor.avgilluminance
+      below: '30'
+####################################################  MODE IS NIGHT  ######################################################     
+    - condition: state
+      entity_id: input_select.mode
+      state: 'Nacht'
+
+      
+#############################################################################################  TURN OFF IF NO MOTION  #######
+- alias: 'Floor Light Off2'
+  hide_entity: True
+  trigger:
+    platform: state
+#    entity_id: binary_sensor.flur_motion
+    entity_id: binary_sensor.xiaomi_motion
+    to: 'off'
+    for:
+      seconds: 15
+####################################################  TURN ON FLOOR  TOP @ NIGHT IF MOTION  ############################
+  action:
+  - service: light.turn_off
+    data:
+      entity_id: 'light.flur'
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.floor
+####################################################  CONDITIONS  #######################################################
+  condition:
+ ################################################  Lights have been off before  ######################################################
+    condition: state
+    entity_id: 'input_boolean.floor'
+    state: 'on'

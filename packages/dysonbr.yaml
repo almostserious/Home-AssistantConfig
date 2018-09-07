@@ -1,0 +1,71 @@
+#####################################
+##########  INPUT SWITCH  ###########
+#####################################
+
+input_boolean:
+  bedroomfanpower:
+    name: PowerToggle
+    icon: mdi:power
+  bedroomfannightmode:
+    name: Night Mode
+#    initial: off
+    icon: mdi:weather-night
+  bedroomfanoscillate:
+    name: Oscillate
+#    initial: off
+    icon: mdi:code-tags
+  abkuhlenbr:
+    name: Abkühlen
+    icon: mdi:snowflake
+  stopwatchbr:
+    name: Stopwatch
+#    initial: off
+  dummybr:
+    name: Dummy
+#    initial: off
+#####################################
+#######  TIMER / STOPWATCH  #########
+#####################################
+sensor:
+  - platform: template
+    sensors:
+      stopwatchbr:
+        friendly_name: "Stopwatch BR"
+        value_template: >
+          {% if is_state('input_boolean.stopwatchbr', 'on') %}
+            {{ (now() - states.automation.stopwatch_start_BR.attributes.last_triggered).total_seconds() | int }}
+          {%-elif is_state('sensor.stopwatchbr', 'unknown') %}
+            0
+          {% else %}
+            {{ states.sensor.stopwatchbr.state }}
+          {% endif %}
+        unit_of_measurement: 'sec'
+        entity_id:
+          - automation.stopwatch_start_BR
+          - automation.stopwatch_update_BR
+          - automation.stopwatch_stop_BR
+  - platform: template
+    sensors:
+      timedysonbr:
+        friendly_name: "Time Left"
+        value_template: '{{ (states.input_number.bedroom_fantime.state | int - states.sensor.stopwatchbr.state | int / 60)| round }}'
+        unit_of_measurement: 'min'
+#####################################
+#########  INPUT SLIDER   ###########
+#####################################
+input_number:
+  bedroom_fanspeed:
+    name: Speed
+#    initial: 0
+    min: 1
+    max: 10
+    step: 1
+    icon: mdi:fan
+
+  bedroom_fantime:
+    name: Timer
+#    initial: 0
+    min: 0
+    max: 90
+    step: 5
+    icon: mdi:timer

@@ -1,0 +1,18 @@
+
+- alias: 'turn on Music' 
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_select.mode
+    from: 'Away'
+    to: 'Tag'
+  action:
+  - service: notify.notify
+    data:
+      message: 'Spiel Musik auf Überall'
+      title: 'Command'
+      target: 'device/Samsung SM-T719'
+  condition:
+    - condition: time
+      after: '11:00:00'
+      before: '21:30:00'

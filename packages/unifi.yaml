@@ -1,0 +1,11 @@
+#####################################
+##########  WIFI SWITCH    ##########
+#####################################     
+switch:
+  - platform: command_line
+    switches:
+      guest_wifi:
+        command_on: '/share/unifi_guest.sh enable'
+        command_off: '/share/unifi_guest.sh disable'
+        command_state: '/share/unifi_guest.sh status'
+        friendly_name: Guest WiFi

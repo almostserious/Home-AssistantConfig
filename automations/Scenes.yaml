@@ -1,0 +1,338 @@
+#################  Turn ON livingroom Fan to 4, Oscillate On & Timer 20 min  #########
+- alias: 'abkühlen wohnzimmer'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.abkuhlen
+    from: 'off'
+    to: 'on'
+  action:
+#  - service: input_boolean.turn_on
+#    data:
+#      entity_id: input_boolean.livingroomfanpower
+  - delay: '00:00:01'
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.livingroom_fanspeed
+      value: '6'
+  - delay: '00:00:01'
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.livingroomfanoscillate
+  - delay: '00:00:01'
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.livingroom_fantime
+      value: '20'
+
+- alias: 'abkühlen wohnzimmer aus'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.abkuhlen
+    from: 'on'
+    to: 'off'
+  action:
+  - service: fan.turn_off
+    data:
+      entity_id: fan.wohnzimmer
+
+#################  Turn ON bedroomFan to 2, Oscillate On & Timer 45 min  #########
+- alias: 'abkühlen schlafzimmer'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.abkuhlenbr
+    from: 'off'
+    to: 'on'
+  action:
+#  - service: input_boolean.turn_on
+#    data:
+#      entity_id: input_boolean.bedroomfanpower
+  - delay: '00:00:01'
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.bedroom_fanspeed
+      value: '3'
+  - delay: '00:00:01'
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.bedroomfanoscillate
+  - delay: '00:00:01'
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.bedroom_fantime
+      value: '45'
+
+- alias: 'abkühlen schlafzimmer aus'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.abkuhlenbr
+    from: 'on'
+    to: 'off'
+  action:
+  - service: fan.turn_off
+    data:
+      entity_id: fan.schlafzimmer
+
+
+
+
+#######################  AUTO TURN OFF BOOLEAN IF POWER IS OFF  #############
+- alias: 'turn off abkühlen lr' 
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.livingroomfanpower
+    from: 'on'
+    to: 'off'
+  action:
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.abkuhlen
+      
+
+######################  AUTO TURN OFF BOOLEAN IF POWER IS OFF  #############
+- alias: 'turn off abkühlen br' 
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.bedroomfanpower
+    from: 'on'
+    to: 'off'
+  action:
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.abkuhlenbr
+      
+
+
+#########################################################  SPOTIFY  ###########
+
+# - alias: 'turn on spotify' 
+  # hide_entity: True
+  # trigger:
+    # platform: state
+    # entity_id: input_select.mode
+    # from: 'Away'
+    # to: 'Tag'
+  # action:
+# #  - wait_template: "{{ states.input_select.mode.state != 'Away' }}"
+# #    timeout: 00:00:15    
+  # - service: media_player.media_play
+    # data:
+      # entity_id: media_player.spotify
+  # - service: media_player.select_source
+    # data:
+      # entity_id: media_player.spotify
+      # source: 'Wohnung'
+  # - service: media_player.media_play
+    # data:
+      # entity_id: media_player.spotify
+  # condition:
+    # condition: and
+    # conditions:
+# #      - condition: state
+# #        entity_id: media_player.spotify
+# #        state: 'paused'
+# #      - condition: template
+# #        value_template: "{% if not is_state('media_player.spotify', 'playing') %}true{% endif %}"
+      # - condition: time
+        # after: '11:00:00'
+        # before: '21:30:00'
+# #      - condition: template
+# #        value_template: "{% if not is_state('input_select.mode', 'away') %}true{% endif %}"
+# #      - condition: or
+# #        conditions:
+      # # - condition: state
+        # # state: states.media_player.spotify.attributes.source
+# #          - condition: template
+# #            value_template: > 
+# #                            {% if states.media_player.spotify.attributes.source == "Wohnung" %}
+# #                            False
+# #                            {%-elif states.media_player.spotify.attributes.source == "Küche" %}
+# #                            False
+# #                            {%-elif states.media_player.spotify.attributes.source == "Bad" %}
+# #                            False
+# #                            {%-elif states.media_player.spotify.attributes.source == "Spot" %}
+# #                            False
+# #                            {%-elif states.media_player.spotify.attributes.source == "Wohnzimmer" %}
+# #                            False
+# #                            {%-elif states.media_player.spotify.attributes.source == "Schlafzimmer" %}
+# #                            False
+# #                            {%- else -%}
+# #                            True
+# #                            {% endif %}
+
+############## Turn on Living Room Lights if back  #########################################
+- alias: 'turn on LR Scene 1' 
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_select.mode
+#    from: 'Away'
+    to: 'Tag'
+  action:
+  - service: script.turn_on
+    entity_id: script.livingroom_scene1
+  condition:
+    - condition: numeric_state
+      entity_id: sensor.avgilluminance
+      below: '60'
+#########################################################  STOP AUDIO PLAYBACK IF AWAY  #########################################
+
+- alias: 'turn off music' 
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_select.mode
+    to: 'Away'
+  action:
+  - service: media_player.media_stop
+    data:
+      entity_id: media_player.uberall
+
+
+
+
+
+# - alias: 'turn off spotifyalexa' 
+  # hide_entity: True
+  # trigger:
+    # platform: state
+    # entity_id: input_select.mode
+    # to: 'Away'
+  # action:
+  # - service: media_player.media_pause
+    # data:
+      # entity_id: media_player.spotify
+  # - service: media_player.shuffle_set
+    # data:
+      # entity_id: media_player.spotify
+      # shuffle: false
+  # - service: notify.notify
+    # data_template: 
+      # title: Playback stopped
+      # message: Spotify Playback stopped @ home
+  # condition:
+    # condition: or
+    # conditions:
+      # # - condition: state
+        # # state: states.media_player.spotify.attributes.source
+      # - condition: template
+        # value_template: '{{ states.media_player.spotify.attributes.source == "Wohnung" }}'
+      # - condition: template
+        # value_template: '{{ states.media_player.spotify.attributes.source == "Küche" }}'      
+      # - condition: template
+        # value_template: '{{ states.media_player.spotify.attributes.source == "Bad" }}' 
+      # - condition: template
+        # value_template: '{{ states.media_player.spotify.attributes.source == "Wohnzimmer" }}' 
+      # - condition: template
+        # value_template: '{{ states.media_player.spotify.attributes.source == "Schlafzimmer" }}' 
+      # - condition: template
+        # value_template: '{{ states.media_player.spotify.attributes.source == "Spot" }}'
+        
+######################################################### TURN OFF DOOR OPENER IF TURNED ON AFTER 7 Sec ####################
+
+- alias: 'turn off door opener' 
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: light.door_entry
+    to: 'on'
+  action:
+  - delay: '00:00:07'
+  - service: light.turn_off
+    data:
+      entity_id: light.door_entry
+
+#########################################################  TURN ON BOTH RECEIVERS IF ÜBERALL IS PLAYING  ###################
+
+#- alias: 'turn on Denon when überall is playing'
+#  trigger:
+#    platform: state
+#    entity_id: media_player.uberall_2
+#    to: 'playing'
+#  action:
+#  - service: remote.turn_on
+#    entity_id: remote.living_room
+#    data:
+#      activity: "25746025"
+#  condition:
+#    condition: state
+#    entity_id: remote.living_room
+#    state: 'off'
+    
+#- alias: 'turn on Onkyo when überall is playing'
+#  trigger:
+#    platform: state
+#    entity_id: media_player.uberall_2
+#    to: 'playing'
+#  action:
+#  - service: remote.turn_on
+#    entity_id: remote.harmony_hub
+#    data:
+#      activity: "28599317"
+#  condition:
+#    condition: state
+#    entity_id: remote.harmony_hub
+#    state: 'off'
+    
+###########################  TURN OFF   ##################################
+    
+#- alias: 'turn off onkyo when überall is stopping'
+#  trigger:
+#    - platform: state
+#      entity_id: media_player.uberall_2
+#      from: 'playing'
+#      to: 'paused'
+#      for:
+#        minutes: 5
+#    - platform: state
+#      entity_id: media_player.uberall_2
+#      from: 'playing'
+#      to: 'off'
+#      for:
+#        minutes: 5      
+#  action:
+#  - service: remote.turn_off
+#    entity_id: remote.harmony_hub
+#    data:
+#      activity: "28599317"
+#  condition:
+#    condition: and
+#    conditions:
+#      - condition: template
+#        value_template: '{{ states.remote.harmony_hub.attributes.current_activity == "Musik hören" }}'
+
+
+
+#- alias: 'turn off Denon when überall is stopping'
+#  trigger:
+#    - platform: state
+#      entity_id: media_player.uberall_2
+#      from: 'playing'
+#      to: 'paused'
+#      for:
+#        minutes: 5
+#    - platform: state
+#      entity_id: media_player.uberall_2
+#      from: 'playing'
+#      to: 'off'
+#      for:
+#        minutes: 5      
+#  action:
+#  - service: remote.turn_off
+#    entity_id: remote.living_room
+#    data:
+#      activity: "25746025"
+#  condition:
+#    condition: and
+#    conditions:
+#      - condition: template
+#        value_template: '{{ states.remote.living_room.attributes.current_activity == "Listen to Music" }}'###
+
+
+
+    

@@ -1,0 +1,320 @@
+binary_sensor:
+#####################################
+############  ON / OFF  #############
+#####################################
+
+  - platform: mqtt
+    state_topic: "smartthings/Fib Kitchen/motion/state"
+    name: "Küche Motion"
+    qos: 2
+    payload_on: "active"
+    payload_off: "inactive"
+    device_class: motion
+    retain: true
+
+  - platform: mqtt
+    state_topic: "smartthings/Fib Bath 2/motion/state"
+    name: "Bad2 Motion"
+    qos: 0
+    payload_on: "active"
+    payload_off: "inactive"
+    device_class: motion
+    retain: true
+    
+  - platform: mqtt
+    state_topic: "smartthings/Fib Bath/motion/state"
+    name: "Bad Motion"
+    qos: 0
+    payload_on: "active"
+    payload_off: "inactive"
+    device_class: motion
+    retain: true    
+
+  - platform: mqtt
+    state_topic: "smartthings/Xiaomi Motion/motion/state"
+    name: "Xiaomi Motion"
+    qos: 0
+    payload_on: "active"
+    payload_off: "inactive"
+    device_class: motion
+    retain: true
+
+  - platform: mqtt
+    state_topic: "smartthings/Motion Sensor Bedroom/motion/state"
+    name: "Ankleide Motion"
+    qos: 0
+    payload_on: "active"
+    payload_off: "inactive"
+    device_class: motion
+    retain: true
+    
+#####################################
+##########  OPEN / CLOSE  ###########
+#####################################
+  - platform: mqtt
+    state_topic: "smartthings/SmartSense Multi/contact/state"
+    name: "Tür Kontakt"
+    qos: 0
+    payload_on: "open"
+    payload_off: "closed"
+    device_class: opening
+    retain: true
+
+  - platform: mqtt
+    state_topic: "smartthings/Xiaomi Door Sensor/contact/state"
+    name: "Xiaomi Kontakt"
+    qos: 0
+    payload_on: "open"
+    payload_off: "closed"
+    device_class: opening
+    retain: true
+    
+#####################################
+##########  BUTTON SENSOR  ##########
+#####################################
+sensor:
+  - platform: mqtt
+    state_topic: "smartthings/Xiaomi Button/button/state"
+    name: "Snooze"
+    retain: true
+#####################################
+##########  BATTERY LEVEL  ##########
+#####################################
+  - platform: mqtt
+    state_topic: "smartthings/Danalock/battery/state"
+    name: "Danalock Battery"
+    unit_of_measurement: "%"
+    retain: true
+    
+  - platform: mqtt
+    state_topic: "smartthings/Fib Bath/battery/state"
+    name: "Fibaro Bad Battery"
+    unit_of_measurement: "%"
+    retain: true    
+    
+  - platform: mqtt
+    state_topic: "smartthings/Fib Bath 2/battery/state"
+    name: "Fibaro Bad2 Battery"
+    unit_of_measurement: "%"
+    retain: true    
+    
+  - platform: mqtt
+    state_topic: "smartthings/Fib Kitchen/battery/state"
+    name: "Fibaro Küche Battery"
+    unit_of_measurement: "%"
+    retain: true
+    
+  - platform: mqtt
+    state_topic: "smartthings/Motion Sensor Bedroom/battery"
+    name: "Smartthings Motion Ankleide Battery"
+    unit_of_measurement: "%"
+    retain: true
+    
+  - platform: mqtt
+    state_topic: "smartthings/SmartSense Multi/battery/state"
+    name: "Smartthings Tür Battery"
+    unit_of_measurement: "%"
+    retain: true
+    
+  - platform: mqtt
+    state_topic: "smartthings/Xiaomi Button/battery/state"
+    name: "Xiaomi Button Battery"
+    unit_of_measurement: "%"
+    retain: true    
+    
+  - platform: mqtt
+    state_topic: "smartthings/Xiaomi Door Sensor/battery/state"
+    name: "Xiaomi Tür Battery"
+    unit_of_measurement: "%"
+    retain: true       
+    
+  - platform: mqtt
+    state_topic: "smartthings/Xiaomi Motion/battery/state"
+    name: "Xiaomi Motion Battery"
+    unit_of_measurement: "%"
+    retain: true       
+#####################################
+##########   ENERGY KWH   ###########
+#####################################    
+    
+  - platform: mqtt
+    state_topic: "smartthings/Wall Plug Media/energy/state"
+    name: "Media Energy"
+    unit_of_measurement: "kWh"
+    retain: true
+    
+  - platform: mqtt
+    state_topic: "smartthings/Wall Plug Bathroom/energy/state"
+    name: "Bad Energy"
+    unit_of_measurement: "kWh"
+    retain: true
+    
+  - platform: mqtt
+    state_topic: "smartthings/Wall Plug Bedroom/energy/state"
+    name: "TV Energy"
+    unit_of_measurement: "kWh"
+    retain: true    
+    
+  - platform: mqtt
+    state_topic: "smartthings/Wall Plug Nas/energy/state"
+    name: "NAS Energy"
+    unit_of_measurement: "kWh"
+    retain: true
+#####################################
+##########   POWER WATT   ###########
+#####################################        
+  - platform: mqtt
+    state_topic: "smartthings/Wall Plug Media/power/state"
+    name: "Media Power"
+    unit_of_measurement: "W"
+    retain: true
+    
+  - platform: mqtt
+    state_topic: "smartthings/Wall Plug Bathroom/power/state"
+    name: "Bad Power"
+    unit_of_measurement: "W"
+    retain: true
+    
+  - platform: mqtt
+    state_topic: "smartthings/Wall Plug Bedroom/power/state"
+    name: "TV Power"
+    unit_of_measurement: "W"
+    retain: true    
+    
+  - platform: mqtt
+    state_topic: "smartthings/Wall Plug Nas/power/state"
+    name: "NAS Power"
+    unit_of_measurement: "W"
+    retain: true     
+#####################################
+##########   TEMPERATURE   ##########
+#####################################   
+  - platform: mqtt
+    state_topic: "smartthings/Fib Bath 2/temperature/state"
+    name: "Bad2 Temperatur"
+    unit_of_measurement: "°C"
+    retain: true
+    
+  - platform: mqtt
+    state_topic: "smartthings/Fib Bath/temperature/state"
+    name: "Bad Temperatur"
+    unit_of_measurement: "°C"
+    retain: true
+  
+  - platform: mqtt
+    state_topic: "smartthings/Fib Kitchen/temperature/state"
+    name: "Küche Temperatur"
+    unit_of_measurement: "°C"
+    retain: true
+
+  - platform: mqtt
+    state_topic: "smartthings/Motion Sensor Bedroom/temperature/state"
+    name: "Ankleide Temperatur"
+    unit_of_measurement: "°C"
+    retain: true
+  
+  - platform: mqtt
+    state_topic: "smartthings/SmartSense Multi/temperature/state"
+    name: "Tür Temperatur"
+    unit_of_measurement: "°C"
+    retain: true
+#####################################
+##########   ILLUMINANCE   ##########
+#####################################
+
+  - platform: mqtt
+    state_topic: "smartthings/Fib Bath 2/illuminance/state"
+    name: "Bad2 Helligkeit"
+    unit_of_measurement: "Lux"
+    retain: true
+    
+  - platform: mqtt
+    state_topic: "smartthings/Fib Bath/illuminance/state"
+    name: "Bad Helligkeit"
+    unit_of_measurement: "Lux"
+    retain: true
+  
+  - platform: mqtt
+    state_topic: "smartthings/Fib Kitchen/illuminance/state"
+    name: "Küche Helligkeit"
+    unit_of_measurement: "Lux"
+    retain: true
+    
+########  AVERAGE ILLUMINANCE  #########
+
+  - platform: template
+    sensors:
+      avgilluminance:
+        friendly_name: "Ø Helligkeit"
+        value_template: '{{ ((states.sensor.bad2_helligkeit.state | int + states.sensor.bad_helligkeit.state | int + states.sensor.kuche_helligkeit.state | int ) / 3)| round }}'
+        unit_of_measurement: 'Lux'
+        
+#####################################
+########   POWER SWITCHES   #########
+#####################################        
+switch:
+  - platform: mqtt
+    command_topic: "smartthings/Osram Charger Station/switch/cmd"
+    #command_topic: "smartthings/Osram Charger Station/switch/state"
+    state_topic: "smartthings/Osram Charger Station/switch/state"
+    name: "Charger Station"
+    payload_on: "on"
+    payload_off: "off"
+    optimistic: true
+    qos: 1
+#    retain: true    
+    
+  - platform: mqtt
+    command_topic: "smartthings/Wall Plug Bathroom/switch/cmd"
+   # command_topic: "smartthings/Wall Plug Bathroom/switch/state"
+    state_topic: "smartthings/Wall Plug Bathroom/switch/state"
+    payload_on: "on"
+    payload_off: "off"
+    name: "Bad Strom"
+    optimistic: true
+    qos: 1
+#    retain: true
+
+  - platform: mqtt
+    command_topic: "smartthings/Wall Plug Bedroom/switch/cmd"
+ #   command_topic: "smartthings/Wall Plug Bedroom/switch/state"
+    state_topic: "smartthings/Wall Plug Bedroom/switch/state"
+    payload_on: "on"
+    payload_off: "off"
+    name: "TV Strom"
+    optimistic: true
+    qos: 1
+#    retain: true
+    
+  - platform: mqtt
+    command_topic: "smartthings/Wall Plug Nas/switch/cmd"
+   # command_topic: "smartthings/Wall Plug Nas/switch/state"
+    state_topic: "smartthings/Wall Plug Nas/switch/state"
+    payload_on: "on"
+    payload_off: "off"
+    name: "NAS Strom"
+    optimistic: true
+    qos: 1     
+#    retain: true
+    
+  - platform: mqtt
+    command_topic: "smartthings/Wall Plug Media/switch/cmd"
+  #  command_topic: "smartthings/Wall Plug Media/switch/state"
+    state_topic: "smartthings/Wall Plug Media/switch/state"
+    payload_on: "on"
+    payload_off: "off"
+    name: "MEDIA Strom"
+    optimistic: true
+    qos: 1
+#    retain: true
+    
+  - platform: mqtt
+    command_topic: "smartthings/Osram WiiU Plug/switch/cmd"
+#    command_topic: "smartthings/Osram WiiU Plug/switch/state"
+    state_topic: "smartthings/Osram WiiU Plug/switch/state"
+    payload_on: "on"
+    payload_off: "off"
+    name: "WIIU Strom"
+    optimistic: true
+    qos: 1
+#    retain: true

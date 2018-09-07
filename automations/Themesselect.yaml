@@ -1,0 +1,29 @@
+  - alias: Darker Theme At Sunset
+    hide_entity: True
+    trigger:
+      platform: time
+      minutes: '/15'
+      seconds: 00
+    action:
+      service: frontend.set_theme
+      data_template:
+        name: 'night'
+    condition:
+      condition: state
+      entity_id: sun.sun
+      state: below_horizon
+
+  - alias: Lighter Theme At Sunset
+    hide_entity: True
+    trigger:
+      platform: time
+      minutes: '/15'
+      seconds: 00
+    action:
+      service: frontend.set_theme
+      data_template:
+        name: 'grey'
+    condition:
+      condition: state
+      entity_id: sun.sun
+      state: above_horizon

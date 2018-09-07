@@ -1,0 +1,312 @@
+- alias: setslidergroup
+  hide_entity: True
+  condition:
+    - condition: state
+      entity_id: 'input_boolean.gruppe2'
+      state: 'off'
+  trigger:
+    - platform: state
+      entity_id: input_number.cast_wohnzimmer
+    - platform: state
+      entity_id: input_number.cast_schlafzimmer
+    - platform: state
+      entity_id: input_number.cast_kuche
+    - platform: state
+      entity_id: input_number.cast_bad
+    - platform: state
+      entity_id: input_number.cast_tv
+    - platform: state
+      entity_id: input_number.cast_bett
+  action:
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.gruppe
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.cast_uberall
+      value: >
+            {% if ((states.input_number.cast_uberall.state | int) + (((trigger.to_state.state | int - trigger.from_state.state | int) / 6) | round)) < 0  %}
+               {% set value = (0) %}
+            {% else %}
+              {% set value = states.input_number.cast_uberall.state | int + ((trigger.to_state.state | int - trigger.from_state.state | int) / 6) | round %}
+            {% endif %}
+            {{value}}
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.gruppe
+
+      
+- alias: setsliderindividual
+  hide_entity: True
+  condition:
+    - condition: state
+      entity_id: 'input_boolean.gruppe'
+      state: 'off'
+  trigger:
+    - platform: state
+      entity_id: input_number.cast_uberall
+  action:
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.gruppe2  
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.cast_wohnzimmer
+      value: >
+            {% if (((trigger.to_state.state | int - trigger.from_state.state | int)) | round) <= 0  %}
+               {% set value = ((states.input_number.cast_wohnzimmer.state | int) * ((trigger.to_state.state | int / trigger.from_state.state | int)) ) %}
+            {%-elif (((trigger.to_state.state | int - trigger.from_state.state | int)) | round) > 0 %}
+               {% set value = (((trigger.to_state.state | int - trigger.from_state.state | int) / ( 100 - trigger.from_state.state | int) * (( 100 - states.input_number.cast_wohnzimmer.state | int))) + (states.input_number.cast_wohnzimmer.state | int)) %}
+            {% endif %}
+            {{value}}
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.cast_bad
+      value: >
+            {% if (((trigger.to_state.state | int - trigger.from_state.state | int)) | round) <= 0  %}
+               {% set value = ((states.input_number.cast_bad.state | int) * ((trigger.to_state.state | int / trigger.from_state.state | int)) ) %}
+            {%-elif (((trigger.to_state.state | int - trigger.from_state.state | int)) | round) > 0 %}
+               {% set value = (((trigger.to_state.state | int - trigger.from_state.state | int) / ( 100 - trigger.from_state.state | int) * (( 100 - states.input_number.cast_bad.state | int))) + (states.input_number.cast_bad.state | int)) %}
+            {% endif %}
+            {{value}}
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.cast_schlafzimmer
+      value: >
+            {% if (((trigger.to_state.state | int - trigger.from_state.state | int)) | round) <= 0  %}
+               {% set value = ((states.input_number.cast_schlafzimmer.state | int) * ((trigger.to_state.state | int / trigger.from_state.state | int)) ) %}
+            {%-elif (((trigger.to_state.state | int - trigger.from_state.state | int)) | round) > 0 %}
+               {% set value = (((trigger.to_state.state | int - trigger.from_state.state | int) / ( 100 - trigger.from_state.state | int) * (( 100 - states.input_number.cast_schlafzimmer.state | int))) + (states.input_number.cast_schlafzimmer.state | int)) %}
+            {% endif %}
+            {{value}}
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.cast_kuche
+      value: >
+            {% if (((trigger.to_state.state | int - trigger.from_state.state | int)) | round) <= 0  %}
+               {% set value = ((states.input_number.cast_kuche.state | int) * ((trigger.to_state.state | int / trigger.from_state.state | int)) ) %}
+            {%-elif (((trigger.to_state.state | int - trigger.from_state.state | int)) | round) > 0 %}
+               {% set value = (((trigger.to_state.state | int - trigger.from_state.state | int) / ( 100 - trigger.from_state.state | int) * (( 100 - states.input_number.cast_kuche.state | int))) + (states.input_number.cast_kuche.state | int)) %}
+            {% endif %}
+            {{value}}
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.cast_tv
+      value: >
+            {% if (((trigger.to_state.state | int - trigger.from_state.state | int)) | round) <= 0  %}
+               {% set value = ((states.input_number.cast_tv.state | int) * ((trigger.to_state.state | int / trigger.from_state.state | int)) ) %}
+            {%-elif (((trigger.to_state.state | int - trigger.from_state.state | int)) | round) > 0 %}
+               {% set value = (((trigger.to_state.state | int - trigger.from_state.state | int) / ( 100 - trigger.from_state.state | int) * (( 100 - states.input_number.cast_tv.state | int))) + (states.input_number.cast_tv.state | int)) %}
+            {% endif %}
+            {{value}}
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.cast_bett
+      value: >
+            {% if (((trigger.to_state.state | int - trigger.from_state.state | int)) | round) <= 0  %}
+               {% set value = ((states.input_number.cast_bett.state | int) * ((trigger.to_state.state | int / trigger.from_state.state | int)) ) %}
+            {%-elif (((trigger.to_state.state | int - trigger.from_state.state | int)) | round) > 0 %}
+               {% set value = (((trigger.to_state.state | int - trigger.from_state.state | int) / ( 100 - trigger.from_state.state | int) * (( 100 - states.input_number.cast_bett.state | int))) + (states.input_number.cast_bett.state | int)) %}
+            {% endif %}
+            {{value}}
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.gruppe2
+      
+#########################################################################################################################################################
+
+- alias: VolumecontrolWohnzimmer
+  hide_entity: True
+  trigger:
+    - platform: state
+      entity_id: input_number.cast_wohnzimmer
+  action:
+  - service: media_player.volume_set
+    data_template:
+      entity_id: media_player.wohnzimmer
+      volume_level: '{{states.input_number.cast_wohnzimmer.state | int /100 }}'
+
+- alias: VolumecontrolTV
+  hide_entity: True
+  trigger:
+    - platform: state
+      entity_id: input_number.cast_tv
+  action:
+  - service: media_player.volume_set
+    data_template:
+      entity_id: media_player.tv
+      volume_level: '{{states.input_number.cast_tv.state | int /100 }}'
+
+- alias: VolumecontrolSchlafzimmer
+  hide_entity: True
+  trigger:
+    - platform: state
+      entity_id: input_number.cast_schlafzimmer
+  action:
+  - service: media_player.volume_set
+    data_template:
+      entity_id: media_player.schlafzimmer
+      volume_level: '{{states.input_number.cast_schlafzimmer.state | int /100}}'
+      
+- alias: VolumecontrolBad
+  hide_entity: True
+  trigger:
+    - platform: state
+      entity_id: input_number.cast_bad
+  action:
+  - service: media_player.volume_set
+    data_template:
+      entity_id: media_player.bad
+      volume_level: '{{states.input_number.cast_bad.state | int /100}}'
+
+- alias: VolumecontrolKuche
+  hide_entity: True
+  trigger:
+    - platform: state
+      entity_id: input_number.cast_kuche
+  action:
+  - service: media_player.volume_set
+    data_template:
+      entity_id: media_player.kuche
+      volume_level: '{{states.input_number.cast_kuche.state | int /100}}'
+      
+- alias: VolumecontrolBett
+  hide_entity: True
+  trigger:
+    - platform: state
+      entity_id: input_number.cast_bett
+  action:
+  - service: media_player.volume_set
+    data_template:
+      entity_id: media_player.bett
+      volume_level: '{{states.input_number.cast_bett.state | int /100}}'  
+#################################################  VOLUME CONTROL UPDATE ###################
+
+# - alias: UpdateVolumeSystemstart
+  # hide_entity: True
+  # trigger:
+    # - platform: homeassistant
+      # event: start
+  # action:
+  # - delay: 00:00:20
+  # - service: input_boolean.turn_on
+    # data:
+      # entity_id: input_boolean.gruppe2
+  # - service: shell_command.volumeupdate
+  # - service: input_boolean.turn_off
+    # data:
+      # entity_id: input_boolean.gruppe2
+  # - delay: 00:00:05
+  # - service: input_boolean.turn_on
+    # data:
+      # entity_id: input_boolean.gruppe
+  # - service: input_number.set_value
+    # data_template:
+      # entity_id: input_number.cast_uberall
+      # value: '{{(((states.input_number.cast_wohnzimmer.state | int + states.input_number.cast_schlafzimmer.state | int + states.input_number.cast_kuche.state | int +states.input_number.cast_bad.state | int +states.input_number.cast_tv.state | int ) / 5) | int )}}'
+  # - service: input_boolean.turn_off
+    # data:
+      # entity_id: input_boolean.gruppe
+  
+#####################################################  Night Mode Volume  ######################
+
+- alias: VolumeNight
+  hide_entity: True
+  trigger:
+    - platform: state
+      entity_id: input_select.mode
+      to: Nacht
+      from: Tag
+  action:
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.gruppe2
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.cast_kuche
+      value: 10
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.cast_wohnzimmer
+      value: 10
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.cast_tv
+      value: 10
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.cast_schlafzimmer
+      value: 10
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.cast_bad
+      value: 10
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.cast_bett
+      value: 10
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.gruppe2
+  - delay: 00:00:05
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.gruppe
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.cast_uberall
+      value: '{{(((states.input_number.cast_wohnzimmer.state | int + states.input_number.cast_schlafzimmer.state | int + states.input_number.cast_kuche.state | int +states.input_number.cast_bad.state | int +states.input_number.cast_tv.state | int + states.input_number.cast_bett.state | int ) / 6) | int )}}'
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.gruppe
+ #####################################################  Day Mode Volume  ######################
+     
+- alias: VolumeDay
+  hide_entity: True
+  trigger:
+    - platform: state
+      entity_id: input_select.mode
+      to: Tag
+      from: Nacht
+  action:
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.gruppe2
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.cast_kuche
+      value: 25
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.cast_wohnzimmer
+      value: 20
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.cast_tv
+      value: 25
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.cast_schlafzimmer
+      value: 25
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.cast_bad
+      value: 25
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.cast_bett
+      value: 45
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.gruppe2
+  - delay: 00:00:05
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.gruppe
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.cast_uberall
+      value: '{{(((states.input_number.cast_wohnzimmer.state | int + states.input_number.cast_schlafzimmer.state | int + states.input_number.cast_kuche.state | int +states.input_number.cast_bad.state | int +states.input_number.cast_tv.state | int + states.input_number.cast_bett.state | int ) / 6) | int )}}'
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.gruppe

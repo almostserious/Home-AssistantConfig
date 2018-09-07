@@ -1,0 +1,27 @@
+- alias: 'Turn ON PC'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: binary_sensor.xiaomi_kontakt
+    from: 'off'
+    to: 'on'
+    for:
+      seconds: 2
+  action:
+    service: switch.turn_on
+    data:
+      entity_id: switch.gaming
+      
+- alias: 'Turn OFF PC'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: binary_sensor.xiaomi_kontakt
+    from: 'on'
+    to: 'off'
+    for:
+      seconds: 10
+  action:
+    service: switch.turn_off
+    data:
+      entity_id: switch.gaming

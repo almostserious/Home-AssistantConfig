@@ -1,0 +1,243 @@
+#################  HARMONY ###########################
+
+
+# Turn On TV
+- alias: 'TV an'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.tv
+    to: 'on'
+  action:
+  - service: script.turn_on
+    entity_id: script.turnon_tv
+    
+# Turn OFF TV
+- alias: 'TV aus'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.tv
+    to: 'off'
+  action:
+  - service: remote.turn_off
+    entity_id: remote.harmony_hub
+
+# Turn On ShieldTV
+- alias: 'ShieldTV an'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.shieldtv
+    to: 'on'
+  action:
+  - service: script.turn_on
+    entity_id: script.turnon_shieldtv
+    
+# Turn OFF ShieldTV
+- alias: 'ShieldTV aus'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.shieldtv
+    to: 'off'
+  action:
+  - service: remote.turn_off
+    entity_id: remote.living_room
+
+ #######################  VACUUM  ###############################   
+    
+# Clean the Kitchen
+- alias: 'Küche saugen an'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.kitchenvacuum
+    to: 'on'
+  action:
+  - service: script.turn_on
+    entity_id: script.vacuum_kitchen
+    
+# Stop cleaning the Kitchen
+- alias: 'Küche saugen aus'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.kitchenvacuum
+    to: 'off'
+  action:
+  - service: vacuum.turn_off
+    entity_id: vacuum.xiaomi_vacuum_cleaner
+    
+# Clean the Bath
+- alias: 'Bad saugen an'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.bathvacuum
+    to: 'on'
+  action:
+  - service: script.turn_on
+    entity_id: script.vacuum_bath
+    
+# Stop cleaning the Bath
+- alias: 'Bad saugen aus'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.bathvacuum
+    to: 'off'
+  action:
+  - service: vacuum.turn_off
+    entity_id: vacuum.xiaomi_vacuum_cleaner    
+    
+# Clean the Livingroom
+- alias: 'Wohnzimmer saugen an'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.livingroomvacuum
+    to: 'on'
+  action:
+  - service: script.turn_on
+    entity_id: script.vacuum_livingroom
+    
+# Stop cleaning the Livingroom
+- alias: 'Wohnzimmer saugen aus'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.livingroomvacuum
+    to: 'off'
+  action:
+  - service: vacuum.turn_off
+    entity_id: vacuum.xiaomi_vacuum_cleaner      
+    
+# Clean the Bedroom
+- alias: 'Schlafzimmer saugen an'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.bedroomvacuum
+    to: 'on'
+  action:
+  - service: script.turn_on
+    entity_id: script.vacuum_bedroom
+    
+# Stop cleaning the Bedroom
+- alias: 'Schlafzimmer saugen aus'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.bedroomvacuum
+    to: 'off'
+  action:
+  - service: vacuum.turn_off
+    entity_id: vacuum.xiaomi_vacuum_cleaner
+
+# Clean the Floor
+- alias: 'Flur saugen an'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.floorvacuum
+    to: 'on'
+  action:
+  - service: script.turn_on
+    entity_id: script.vacuum_floor
+    
+# Stop cleaning the Floor
+- alias: 'Flur saugen aus'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.floorvacuum
+    to: 'off'
+  action:
+  - service: vacuum.turn_off
+    entity_id: vacuum.xiaomi_vacuum_cleaner     
+    
+# Clean everywhere
+- alias: 'Wohnung saugen an'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.allvacuum
+    to: 'on'
+  action:
+  - service: script.turn_on
+    entity_id: script.vacuum_all
+    
+# Stop cleaning everywhere
+- alias: 'Wohnung saugen aus'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.allvacuum
+    to: 'off'
+  action:
+  - service: vacuum.turn_off
+    entity_id: vacuum.xiaomi_vacuum_cleaner
+
+# Clean everywhere except bath
+- alias: 'Wohnung ohne Bad saugen an'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.allnobathvacuum
+    to: 'on'
+  action:
+  - service: script.turn_on
+    entity_id: script.vacuum_all_no_bath
+    
+# Stop cleaning everywhere except bath
+- alias: 'Wohnung ohne Bad saugen aus'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.allnobathvacuum
+    to: 'off'
+  action:
+  - service: vacuum.turn_off
+    entity_id: vacuum.xiaomi_vacuum_cleaner      
+    
+# Mopping Kitchen
+- alias: 'Küche wischen'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.kitchenmop
+    to: 'on'
+  action:
+  - service: script.turn_on
+    entity_id: script.mop_kitchen
+    
+# Stop mopping Kitchen
+- alias: 'Küche wischen aus'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.kitchenmop
+    to: 'off'
+  action:
+  - service: vacuum.turn_off
+    entity_id: vacuum.xiaomi_vacuum_cleaner
+
+#Trigger Booleans to off when stopped cleaning
+- alias: 'Staubsaugen beendet'
+  hide_entity: True
+  trigger:
+    platform: template
+    value_template: "{{ states.vacuum.xiaomi_vacuum_cleaner.attributes.status == 'Charging'}}"
+  action:
+  # wait_template: "{{ states.vacuum.xiaomi_vacuum_cleaner.attributes.status == 'Charging'}}"
+  - service: input_boolean.turn_off
+    entity_id: 
+      - input_boolean.kitchenvacuum
+      - input_boolean.allvacuum
+      - input_boolean.bathvacuum 
+      - input_boolean.livingroomvacuum 
+      - input_boolean.floorvacuum
+      - input_boolean.bedroomvacuum 
+      - input_boolean.allnobathvacuum
+      - input_boolean.kitchenmop

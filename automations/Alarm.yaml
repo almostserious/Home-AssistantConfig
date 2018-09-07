@@ -1,0 +1,173 @@
+- alias: "Wake me up"
+  hide_entity: True
+  trigger:
+    - platform: time
+      minutes: '/1'
+      seconds: 0
+  condition:
+    condition: and
+    conditions:
+      - condition: template
+        value_template: "{% if not is_state('input_datetime.alarmtime', 'unknown') %}true{% endif %}"
+      - condition: template
+        value_template: "{% if not is_state('input_datetime.alarmtime', 'disabled') %}true{% endif %}"
+      - condition: template
+        value_template: '{{ now().strftime("%Y-%m-%d %H:%M:%S") == (as_timestamp(states.input_datetime.alarmtime.state) -60 ) | timestamp_local }}'
+  action:
+  - delay: 00:01:00
+  - service: input_number.set_value
+    data:
+      entity_id: input_number.cast_uberall
+      value: 0
+  - delay: 00:00:05
+  - service: input_number.set_value
+    data:
+      entity_id: input_number.cast_bett
+      value: 3
+  - service: notify.notify
+    data_template:
+      message: 'Spiele Music von Google Play Music auf Überall'
+      title: 'Command'
+      target: 'device/Samsung SM-T719'
+  - delay: 00:05:00
+  - service: input_number.set_value
+    data:
+      entity_id: input_number.cast_bett
+      value: 7
+  - service: input_number.set_value
+    data:
+      entity_id: input_number.cast_schlafzimmer
+      value: 1
+  - delay: 00:05:00
+  - service: input_number.set_value
+    data:
+      entity_id: input_number.cast_bett
+      value: 10
+  - service: input_number.set_value
+    data:
+      entity_id: input_number.cast_schlafzimmer
+      value: 3
+  - delay: 00:05:00
+  - service: input_number.set_value
+    data:
+      entity_id: input_number.cast_bett
+      value: 17
+  - service: input_number.set_value
+    data:
+      entity_id: input_number.cast_schlafzimmer
+      value: 5
+  - delay: 00:05:00
+  - service: input_number.set_value
+    data:
+      entity_id: input_number.cast_bett
+      value: 25
+  - service: input_number.set_value
+    data:
+      entity_id: input_number.cast_schlafzimmer
+      value: 10
+  - delay: 00:05:00
+  - service: input_number.set_value
+    data:
+      entity_id: input_number.cast_bett
+      value: 30
+  - service: input_number.set_value
+    data:
+      entity_id: input_number.cast_schlafzimmer
+      value: 15
+  - delay: 00:05:00
+  - service: input_number.set_value
+    data:
+      entity_id: input_number.cast_bett
+      value: 35
+  - service: input_number.set_value
+    data:
+      entity_id: input_number.cast_schlafzimmer
+      value: 20
+#########################################  ALARM  #########
+#- alias: 'Alarm anschalten'
+#  trigger:
+#    platform: state
+#    entity_id: sensor.alarm
+#    to: 'True'
+#  action:
+#  - service: media_player.media_play
+#    data:
+#      entity_id: media_player.spotify
+#  - service: media_player.select_source
+#    data:
+#      entity_id: media_player.spotify
+#      source: 'Echo Schlafzimmer'
+#  - service: media_player.media_play
+#    data:
+#      entity_id: media_player.spotify
+#######################################  SNOOZE ######################
+###########  5 MIN  ##################################################
+- alias: '5 min SNOOZE'
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: sensor.snooze
+    to: 'pushed'
+  action:
+  - service: media_player.media_pause
+    data:
+      entity_id: media_player.uberall
+#  - service: mqtt.publish
+#    data:
+#      topic: smartthings/Xiaomi Button/button/state
+#      payload: off
+  - delay: 00:05:00
+  - service: media_player.media_play
+    data:
+      entity_id: media_player.uberall
+  # condition:
+    # condition: template
+    # value_template: '{{ states.media_player.spotify.attributes.source == "Schlafzimmer" }}'
+    
+      
+# - alias: 'Turn OFF SNOOZE' 
+  # hide_entity: True
+  # trigger:
+    # platform: state
+    # entity_id: sensor.snooze
+    # to: 'held'
+  # action:
+  # - service: media_player.select_source
+    # data:
+      # entity_id: media_player.spotify
+      # source: 'Wohnung'
+ # # - service: mqtt.publish
+ # #   data:
+ # #     topic: smartthings/Xiaomi Button/button/state
+# #      payload: off
+  # condition:
+    # condition: template
+    # value_template: '{{ states.media_player.spotify.attributes.source == "Schlafzimmer" }}'
+
+- alias: 'Turn OFF Button' 
+  hide_entity: True
+  trigger:
+    - platform: template
+      value_template: "{% if is_state('sensor.snooze', 'held') %}true{% endif %}"
+    - platform: template
+      value_template: "{% if is_state('sensor.snooze', 'pushed') %}true{% endif %}"
+  action:
+  - delay: 00:00:02
+  - service: mqtt.publish
+    data:
+      topic: smartthings/Xiaomi Button/button/state
+#      payload: off/state
+      payload: off
+#############################  TURN OFF BUTTON @ START  #############
+- alias: 'Turn OFF Button at start-up' 
+  hide_entity: True
+  trigger:
+    platform: homeassistant
+    # Event can also be 'shutdown'
+    event: start
+  action:  
+  - service: mqtt.publish
+    data:
+      topic: smartthings/Xiaomi Button/button/state
+#      payload: off/state
+      payload: off

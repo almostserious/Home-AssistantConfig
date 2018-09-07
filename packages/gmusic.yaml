@@ -1,0 +1,44 @@
+input_select:
+  musicgoogle:
+    name: Play Music
+    options:
+     # - " "   # Should be empty
+      - Naturgeräusche
+      - Neuerscheinungen im Radio
+      - Sender Hits von Morgen
+      - 80s Hits
+      - SPEAKER TEST
+      - Thumbs Up
+      - Rap Hype
+      - Vitamin (D)ance
+      - Doom (Original Game Soundtrack)
+    icon: mdi:music-note
+  media_player:
+    name: Speaker
+    options: # entity_ids of your media players
+     - "Bad"
+     - "Schlafzimmer"
+     - "Überall"
+     - "Shield"
+     - "Wohnzimmer"
+     - "TV"
+     - "Philips"
+     - "Küche"
+     - "Nacht"
+     - "Bett"
+    icon: mdi:speaker-wireless
+
+input_boolean:
+  gmusic:
+    name: Play Music
+    icon: mdi:google-play
+    
+script:
+  play_google:
+    sequence:      
+      - service: notify.notify
+        data_template:
+          message: 'Spiele {{ states.input_select.musicgoogle.state }} von Google Play Music auf {{ states.input_select.media_player.state }}'
+          title: 'Command'
+          target: 'device/Samsung SM-T719'
+

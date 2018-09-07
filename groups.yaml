@@ -1,0 +1,484 @@
+#Views
+#Schlazimmer
+bedroom_view:
+  view: yes
+  name: Schlafzimmer
+  icon: mdi:hotel
+  entities:
+    - group.card_alarm
+    - group.mode
+    - group.card_bedroom_lights
+    - group.card_bedroom_harmony
+    - media_player.amazon_fire_tv
+    - group.card_dysonbr
+    - group.mode
+    - sensor.time__date
+    - input_text.alarm
+    - switch.tv_strom
+    - input_boolean.naturesound
+    
+#Wohnzimmer    
+livingroom_view:
+  view: yes
+  name: Wohnzimmer
+  icon: mdi:sofa
+  entities:
+    - group.card_livingroom_lights
+    - group.card_livingroom_harmony
+    - media_player.denon
+    - media_player.shield
+    - media_player.shield_android_tv
+    - media_player.uberall
+    - camera.living
+    - camera.xiaomi1
+    - group.card_dysonlr
+    - group.mode
+    - sensor.time__date
+    - group.location
+    
+#Bad
+bathroom_view:
+  view: yes
+  name: Bad
+  icon: mdi:human-male-female
+  entities:
+    - group.card_bathroom_lights
+    - media_player.bad
+    - sensor.fibaro_bad_battery
+    - sensor.bad_helligkeit
+    - sensor.bad_motion
+    - sensor.bad_temperatur
+    - sensor.bad_energy
+    - sensor.bad_power
+    - sensor.bath_energy_h
+    - sensor.time__date
+    - switch.bad_strom
+    - sensor.bad2_temperatur
+    - sensor.bad2_helligkeit
+    - sensor.bad2_motion
+    
+#Küche
+kitchen_view:
+  view: yes
+  name: Küche
+  icon: mdi:food-fork-drink
+  entities:
+    - group.card_kitchen_lights
+    - media_player.kuche
+    - sensor.fibaro_kuche_battery
+    - sensor.kuche_motion
+    - sensor.kuche_helligkeit
+    - sensor.kuche_temperatur
+    - sensor.time__date
+    
+#Flur
+floor_view:
+  view: yes
+  name: Flur
+  icon: mdi:lock-open-outline
+  entities:
+    - group.card_floor_lights
+    - light.door_entry
+    - binary_sensor.tur_kontakt
+    - sensor.danalock_battery
+    - sensor.fibaro_flur_battery
+    - sensor.smartthings_tur_battery
+    - sensor.time__date
+    - device_tracker.google_maps_104134796803476137613
+    - lock.danalock
+    - alarm_control_panel.shm
+#Sensors
+sensors_view:
+  view: yes
+  name: Sensoren
+  icon: mdi:thermometer-lines
+  entities:
+    - group.battery
+    - group.all_switches
+    - group.motion
+    - group.power
+    - group.powercosts
+    - group.illumincance
+    - group.contact
+    - group.mode
+    - sensor.time__date
+    - group.switches
+    - group.system
+
+#Traffic    
+Traffic_view:
+  view: yes
+  name: Verkehr
+  icon: mdi:car-side
+  entities:
+    - group.card_traffic
+    - sensor.time__date
+
+    
+#media    
+Media_view:
+  view: yes
+  name: Media
+  icon: mdi:speaker
+  entities:
+    - group.card_cast
+#    - media_player.denon
+#    - media_player.nacht
+    - group.card_music
+    - media_player.uberall
+    - media_player.wohnzimmer
+#    - media_player.shield
+    - media_player.kuche
+    - media_player.tv
+    - media_player.bad
+    - media_player.schlafzimmer
+    - media_player.bett
+#weather    
+Weather_view:
+  view: yes
+  name: Wetter
+  icon: mdi:weather-partlycloudy
+  entities:
+    - group.card_climate
+    - group.card_dysonbr
+    - group.card_dysonlr
+    - fan.xiaomi_miio_device
+    
+Vacuum_view:
+  view: yes
+  name: Xiaomi
+  icon: mdi:robot-vacuum
+  entities:
+    - group.card_xiaomi_select
+    - group.card_xiaomi_daily
+   
+Plants_view:
+  view: yes
+  name: Plants
+  icon: mdi:flower
+  entities:
+    - plant.friedenslilie
+    - plant.areca_palme  
+
+Camera_view:
+  view: yes
+  name: Camera
+  icon: mdi:cctv
+  entities:
+    - camera.xiaomi1
+    - camera.xiaomi2
+    - input_boolean.cameratoogle
+#####################################################  Groups  ##############
+#Schlafzimmer
+card_bedroom_lights:
+  name: Lampen Schlafzimmer
+  entities:
+    - light.schlafzimmer
+    - light.bedroom_dresser
+    - light.bedroom_left
+    - light.bedroom_right
+    - light.bedroom_tv_left
+    - light.bedroom_tv_right
+
+#Schlafzimmer
+card_bedroom_harmony:
+  name: Harmony Schlafzimmer
+  entities:
+    - remote.harmony_hub
+    
+#Wohnzimmer
+card_livingroom_lights:
+  name: Lampen Wohnzimmer
+  entities:
+    - light.wohnzimmer
+    - light.screen
+    - light.living_room_back_left
+    - light.living_room_left_top
+    - light.livingroom_left_go
+    - light.livingroom_right_go
+    - light.desklamp
+    
+card_livingroom_harmony:
+  name: Harmony Wohnzimmer
+  entities:
+    - remote.living_room
+    
+card_climate:
+  name: Klima
+  entities:
+    - sensor.netatmo_aussen_humidity
+    - sensor.netatmo_indoor_humidity
+    - sensor.schlafzimmer_humidity
+    - sensor.wohnzimmer_humidity
+    - sensor.humidity_158d000205937b
+    - sensor.humidity_158d0001e5871f
+    - sensor.yr_symbol
+    - sun.sun
+    - sensor.netatmo_aussen_temperature
+    - sensor.netatmo_indoor_temperature
+    - sensor.bad_temperatur
+    - sensor.bad2_temperatur
+    - sensor.kuche_temperatur
+    - sensor.tur_temperatur
+    - sensor.ankleide_temperatur
+    - sensor.temperature_158d000205937b
+    - sensor.temperature_158d0001e5871f
+    - sensor.schlafzimmer_temperature
+    - sensor.wohnzimmer_temperature
+    - sensor.wohnzimmer_dust
+    - sensor.wohnzimmer_air_quality
+    - sensor.wohnzimmer_filter_life
+    - sensor.schlafzimmer_dust
+    - sensor.schlafzimmer_air_quality
+    - sensor.schlafzimmer_filter_life
+    - sensor.netatmo_indoor_co2
+    - sensor.netatmo_indoor_noise
+    - sensor.netatmo_indoor_pressure
+    - camera.weather
+    - sensor.netatmo_indoor_wifi
+    - sensor.netatmo_aussen_radio
+#Bad
+card_bathroom_lights:
+  name: Lampen Bad
+  entities:
+    - light.bad
+    - light.bathroom_flex
+    - light.bathroom_top
+    
+#Küche
+card_kitchen_lights:
+  name: Lampen Küche
+  entities:
+    - light.kuche
+    - light.kitchen_top
+    - light.kitchen
+    
+#Flur
+card_floor_lights:
+  name: Lampen Flur
+  entities:
+    - light.flur
+    
+#Traffic
+card_traffic:
+  name: Verkehr
+  entities:
+    - camera.parking
+    - sensor.bad_soden_to_schwalbach_nord
+    - sensor.schwalbach_nord_to_bad_soden
+    - sensor.heimweg
+    - sensor.arbeitsweg
+    
+#LivingRoomFan
+card_dysonlr:
+  name: Dyson Wohnzimmer
+  control: hidden
+  entities:
+    - fan.wohnzimmer
+    - input_boolean.livingroomfanoscillate
+    - input_number.livingroom_fanspeed
+    - input_number.livingroom_fantime
+    - sensor.timedyson
+    - input_boolean.abkuhlen
+    - input_boolean.livingroomfannightmode
+    
+#BedRoomFan
+card_dysonbr:
+  name: Dyson Schlafzimmer
+  control: hidden
+  entities:
+    - fan.schlafzimmer
+    - input_boolean.bedroomfanoscillate
+    - input_number.bedroom_fanspeed
+    - input_number.bedroom_fantime
+    - sensor.timedysonbr
+    - input_boolean.abkuhlenbr
+    - input_boolean.bedroomfannightmode
+    
+#Alarm
+card_alarm:
+  name: Alarm
+  control: hidden
+  entities:
+    - sensor.nextalarm
+    - sensor.alarmtime   
+    - sensor.snooze
+    
+card_cast:
+  name: Cast Lautstärke
+  control: hidden
+  entities:
+    - input_number.cast_uberall
+    - input_number.cast_wohnzimmer
+    - input_number.cast_tv
+    - input_number.cast_schlafzimmer
+    - input_number.cast_bett
+    - input_number.cast_kuche
+    - input_number.cast_bad
+
+    
+card_netatmo:
+  name: Netatmo Welcome
+  control: hidden
+  entities:
+    - binary_sensor.living_motion
+    - binary_sensor.living_someone_known
+    - binary_sensor.living_someone_unknown
+###############################################  STOPWATCH  ##################################################
+stopwatch:
+  name: Stopwatch Wohnzimmer
+  entities:
+    - input_boolean.stopwatch
+    - sensor.stopwatch
+
+stopwatchbr:
+  name: Stopwatch Schlafzimmer
+  entities:
+    - input_boolean.stopwatchbr
+    - sensor.stopwatchbr
+    
+card_music:
+  name: Musik 
+  entities:
+  - media_player.spotify
+  - input_select.musicspotify
+  - input_select.musicgoogle
+  - input_select.media_player
+  - input_boolean.gmusic
+  - input_boolean.spotify
+#  - input_number.spotify_volume
+  
+
+
+##############################################  POWER / ENERGY  #############################################
+
+power:
+  name: Strom
+  entities:
+  - sensor.media_power
+  - sensor.media_energy
+  - sensor.nas_power
+  - sensor.nas_energy
+  - sensor.tv_power
+  - sensor.tv_energy
+  - sensor.bad_power
+  - sensor.bad_energy
+  - sensor.total_power  
+  - sensor.total_energy
+powercosts:
+  name: Strom Kosten
+  entities:
+  - sensor.bath_energy_h
+  - sensor.total_energy_costs
+  - sensor.total_energy_h
+############################################ ILLUMINANCE ###################################################
+illumincance:
+  name: Helligkeit
+  entities:
+  - sensor.bad2_helligkeit
+  - sensor.bad_helligkeit
+  - sensor.kuche_helligkeit
+  - sensor.avgilluminance
+  - sensor.illumination_7811dce1e92b
+  
+###########################################  BATTERY  ######################################################
+
+battery:
+  name: Batterie
+  entities:
+  - sensor.danalock_battery
+  - sensor.fibaro_bad_battery
+  - sensor.fibaro_kuche_battery
+  - sensor.fibaro_bad2_battery
+  - sensor.smartthings_motion_ankleide_battery
+  - sensor.smartthings_tur_battery
+  - sensor.xiaomi_button_battery
+  - sensor.xiaomi_tur_battery
+  - sensor.xiaomi_motion_battery
+  - sensor.netatmo_aussen_battery
+
+  #############################################  CONTACT SENSOR  #############################################
+
+contact:
+  name: Kontakt
+  entities:
+  - binary_sensor.xiaomi_kontakt
+  - binary_sensor.tur_kontakt
+  
+############################################  MOTION  ##################################################
+
+motion:
+  name: Bewegung
+  entities:
+  - binary_sensor.kuche_motion
+  - binary_sensor.bad_motion
+  - binary_sensor.bad2_motion
+  - binary_sensor.ankleide_motion
+  - binary_sensor.xiaomi_motion
+  
+bathroommotion:
+  name: Bad Bewegung
+  entities:
+  - binary_sensor.bad2_motion
+  - binary_sensor.bad_motion
+  
+mode:
+  name: Modus
+  entities:
+  - input_select.mode
+  
+switches:
+  name: Schalter
+  control: hidden
+  entities:
+  - switch.wiiu_strom
+  - switch.tv_strom
+  - switch.nas_strom
+  - switch.media_strom
+  - switch.gaming
+  - switch.charger_station
+  - switch.bad_strom
+  
+floorplan:
+  name: Floorplan
+  entities:
+  - binary_sensor.floorplan
+
+card_xiaomi_daily:   
+  name: Routine
+  control: hidden
+  entities:
+    - vacuum.xiaomi_vacuum_cleaner
+    - input_boolean.disable_daily_vacuum
+
+card_xiaomi_select:    
+  name: Raumwauswahl
+  control: hidden
+  entities:
+    - input_select.vacuum_room
+    - binary_sensor.vacuum_room
+    - sensor.xiaomi_vacuum_cleaner_status
+    - input_boolean.daily_vacuum_first_run
+
+location:
+  name: Standort
+  control: hidden
+  entities:
+    - device_tracker.google_maps_104134796803476137613
+
+google_music:
+  name: Google Music 
+  entities:
+  - input_select.music
+  - input_select.media_player
+  - switch.google_music
+  
+ 
+group.system:
+  name: System Monitor
+  entities:
+    - sensor.memory_use_percent
+    - sensor.load_15m
+    - sensor.load_5m
+    - sensor.load_1m
+    - sensor.processor_use

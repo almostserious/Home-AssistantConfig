@@ -1,0 +1,36 @@
+sensor:
+  - platform: template
+    sensors:
+      total_power:
+        friendly_name: "Total Power"
+        unit_of_measurement: 'W'
+        value_template: '{{ (states.sensor.media_power.state | int + states.sensor.bad_power.state | int + states.sensor.nas_power.state | int ) }}'
+
+  - platform: template
+    sensors:
+      total_energy:
+        friendly_name: "Total Energy"
+        unit_of_measurement: 'kWh'
+        value_template: '{{ (states.sensor.media_energy.state | int + states.sensor.bad_energy.state | int + states.sensor.nas_energy.state | int ) }}'
+
+  - platform: template
+    sensors:
+      total_energy_costs:
+        friendly_name: "Kosten"
+        unit_of_measurement: '€'
+        value_template: '{{ ((states.sensor.media_energy.state | int + states.sensor.bad_energy.state | int + states.sensor.nas_energy.state | int ) * (states.input_text.energycosts.state | int ) / 10000 ) | round(2) }}'
+
+  - platform: template
+    sensors:
+      total_energy_h:
+        friendly_name: "Kosten pro Stunde"
+        unit_of_measurement: '€/h'
+        value_template: '{{ ((states.sensor.media_power.state | int + states.sensor.bad_power.state | int + states.sensor.nas_power.state | int ) * (states.input_text.energycosts.state | int ) / 10000000 ) | round(2) }}'   
+
+  - platform: template
+    sensors:
+      bath_energy_h:
+        friendly_name: "Bad Kosten pro Stunde"
+        unit_of_measurement: '€/h'
+        value_template: '{{ ((states.sensor.bad_power.state | int ) * (states.input_text.energycosts.state | int ) / 10000000 ) | round(2) }}'  
+ 

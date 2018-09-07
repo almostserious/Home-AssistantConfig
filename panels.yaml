@@ -1,0 +1,10 @@
+   
+  configurator:
+    title: Configurator
+    icon: mdi:wrench
+    url: 'https://hassio:3218'
+
+  nodered_flows:
+     title: 'Node-RED Flows'
+     url: 'http://hassio:1880'
+     icon: mdi:nodejsmdi:nodejs
